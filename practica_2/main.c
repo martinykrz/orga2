@@ -44,5 +44,7 @@ int main()
     printf("---------------------------------------\n");
     printStudentp((studentp_t *) stack->pop(stack));
 
+    deleteStack(stack);
+
     return 0;
 }
