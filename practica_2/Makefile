@@ -5,7 +5,7 @@ CFLAGS := -Wall -g
 
 all: app.out
 
-app: main.o stack.o student.o
+app.out: main.o stack.o student.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 stack.o: stack.c stack.h
