@@ -3,3 +3,4 @@
 .gdb_*
 *.pdf
 tmp/*
+*.log
