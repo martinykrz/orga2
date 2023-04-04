@@ -44,7 +44,7 @@ stack_t * createStack(size_t size)
 void deleteStack(stack_t *stack)
 {
     while (stack->ebp != stack->_stackMem) {
-        uint64_t* tmp = stack->ebp+1;
+        uint64_t* tmp = stack->ebp-1;
         free(stack->ebp);
         stack->ebp = tmp;
     }
