@@ -45,6 +45,7 @@ int main()
     printStudentp((studentp_t *) stack->pop(stack));
 
     deleteStack(stack);
+    free(teachers);
 
     return 0;
 }
