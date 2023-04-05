@@ -7,7 +7,7 @@ uint64_t pop(stack_t *stack)
 {
     uint64_t data = *stack->esp;
     *stack->esp = 0;
-    stack->esp -= 1;
+    stack->esp += 1;
     return data;
 }
 
@@ -22,14 +22,14 @@ uint64_t top(stack_t *stack)
 */
 void push(stack_t *stack, uint64_t data)
 {
-    stack->esp += 1;
+    stack->esp -= 1;
     *stack->esp = data;
 }
 
 stack_t * createStack(size_t size)
 {
-    stack_t* stack = malloc(size * sizeof(stack_t));
-    stack->_stackMem = (uint64_t*)stack;
+    stack_t* stack = malloc(sizeof(stack_t));
+    stack->_stackMem = malloc(size * sizeof(uint64_t*));
 
     stack->ebp = stack->_stackMem + size - 1;  // La base del stack es la dirección numéricamente más grande.
     stack->esp = stack->ebp;  // Al comienzo, la base y el tope coinciden
@@ -43,5 +43,6 @@ stack_t * createStack(size_t size)
 
 void deleteStack(stack_t *stack)
 {
-   free(stack); 
+    free(stack->_stackMem);
+    free(stack); 
 }

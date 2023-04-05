@@ -40,9 +40,9 @@ int main()
     printf("Nombre del profesor: %s\n", ((teacher_t *) stack->top(stack))[0].name);
     (*stack->pop)(stack);
 
-    printStudent((student_t *) stack->pop(stack));
-    printf("---------------------------------------\n");
     printStudentp((studentp_t *) stack->pop(stack));
+    printf("---------------------------------------\n");
+    printStudent((student_t *) stack->pop(stack));
 
     deleteStack(stack);
     free(teachers);
