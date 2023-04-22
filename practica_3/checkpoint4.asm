@@ -101,32 +101,33 @@ strDelete:
 
 ; void strPrint(char* a, FILE* pFile)
 strPrint:
-    push rbp
-    mov rbp, rsp
+    ; SIGFAULT, dont'know why
+    ; push rbp
+    ; mov rbp, rsp
 
-    push rdi
-    push rsi
+    ; push rdi
+    ; push rsi
 
-    mov rdi, rsi
-    cmp [rsp + 0x8], byte 0
-    je .null
-    mov rsi, [rsp + 0x8]
-    mov rdx, hello
-    jmp .main
+    ; mov rdi, rsi
+    ; cmp [rsp + 0x8], byte 0
+    ; je .null
+    ; mov rsi, [rsp + 0x8]
+    ; mov rdx, hello
+    ; jmp .main
     
-    .null:
-        mov rsi, format
-        mov rdx, null
+    ; .null:
+    ;     mov rsi, format
+    ;     mov rdx, null
 
-    .main:
-        sub rsp, 8
-        call fprintf wrt ..plt
-        add rsp, 8
+    ; .main:
+    ;     sub rsp, 8
+    ;     call fprintf wrt ..plt
+    ;     add rsp, 8
 
-    pop rsi
-    pop rdi
+    ; pop rsi
+    ; pop rdi
 
-    pop rbp
+    ; pop rbp
 	ret
 
 ; uint32_t strLen(char* a)
