@@ -3,9 +3,9 @@ CFLAGS := -Wall -g
 
 .PHONY: all clean
 
-all: app.out
+all: app
 
-app.out: main.o stack.o student.o
+app: main.o stack.o student.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 stack.o: stack.c stack.h
@@ -21,4 +21,4 @@ main.o: main.c stack.h student.h
 
 clean:
 	rm -f *.o
-	rm -f app.out
+	rm -f app
