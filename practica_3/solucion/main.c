@@ -7,9 +7,16 @@
 #include "checkpoints.h"
 
 int main (void){
-	/* Acá pueden realizar sus propias pruebas */
-	assert(alternate_sum_4(8,2,5,1) == 10);	
-	return 0;    
+	// Acá pueden realizar sus propias pruebas 
+    FILE* fp;
+    fp = fopen("hello.txt", "w");
+    if (fp == NULL) {
+        return 1;
+    }
+    strPrint("%s", fp);
+    /* fprintf(fp, "%s", "Hello, World!\n"); */
+    fclose(fp);
+    return 0;    
 }
 
 

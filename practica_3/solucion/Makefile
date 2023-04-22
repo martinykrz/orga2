@@ -1,5 +1,5 @@
 CC=cc
-CFLAGS= -std=c11 -Wall -Wextra -pedantic -O0 -g -lm -Wno-unused-variable -Wno-unused-parameter
+CFLAGS= -std=c11 -Wall -Wextra -pedantic -O0 -g -lm -Wno-unused-variable -Wno-unused-parameter 
 NASM=nasm
 NASMFLAGS=-f elf64 -g -F DWARF
 
@@ -38,4 +38,4 @@ clean:
 	rm -f *.o
 	rm -f main tester
 	rm -f salida.propios.*
-
+	rm -f *.txt

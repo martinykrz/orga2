@@ -87,9 +87,9 @@ TEST(test_complex_sum_z) {
 
 		uint32_t result = 0;
 		for (int j = 0; j < ARR_LENGTH; j++) {
-			array[j].w = 0;
-			array[j].x = 0;
-			array[j].y = 0;
+			array[j].w = 1;
+			array[j].x = 2;
+			array[j].y = 3;
 			array[j].z = x[j];
 			result += x[j];
 		}
@@ -132,7 +132,7 @@ TEST(test_product_9_f) {
 
 /**
  * Tests checkpoint 4
- */
+ **/
 
 TEST(test_strLen) {
 	TEST_ASSERT_EQUALS(uint32_t,  0, strLen(""));
@@ -262,7 +262,7 @@ int main() {
 	test_packed_complex_sum_z();
 	test_product_9_f();
 	printf("\n");
-
+	
 	printf("= Checkpoint 4\n");
 	printf("==============\n");
 	test_strLen();

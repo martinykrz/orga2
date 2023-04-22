@@ -13,7 +13,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-valgrind --show-reachable=yes --leak-check=full --error-exitcode=1 ./main
+valgrind --show-reachable=yes --leak-check=full --error-exitcode=1  ./main
 if [ $? -ne 0 ]; then
   echo "  **Error de memoria"
   exit 1
