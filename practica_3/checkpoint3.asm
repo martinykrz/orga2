@@ -40,7 +40,6 @@ complex_sum_z:
 ;extern uint32_t packed_complex_sum_z(packed_complex_item *arr, uint32_t arr_length);
 ;registros: arr[?], arr_length[?]
 packed_complex_sum_z:
-
 	;prologo
 	push rbp 
 	mov rbp,rsp
@@ -52,8 +51,7 @@ packed_complex_sum_z:
 	.cycle:     
 
 	    add r9, [rdi + rdx] 
-
-	add rdx, 24
+        add rdx, 24
 
 	loop .cycle 
 
@@ -62,7 +60,6 @@ packed_complex_sum_z:
 	;epilogo
 	pop rbp
 	ret
-
 
 ;extern void product_9_f(uint32_t * destination
 ;, uint32_t x1, float f1, uint32_t x2, float f2, uint32_t x3, float f3, uint32_t x4, float f4
