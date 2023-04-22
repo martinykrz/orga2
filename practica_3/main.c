@@ -8,15 +8,16 @@
 
 int main (void){
 	// Acá pueden realizar sus propias pruebas 
+    // Test strPrint
+    /*
     FILE* fp;
     fp = fopen("hello.txt", "w");
     if (fp == NULL) {
         return 1;
     }
     strPrint("%s", fp);
-    /* fprintf(fp, "%s", "Hello, World!\n"); */
+    //fprintf(fp, "%s", "Hello, World!\n");
     fclose(fp);
+    */
     return 0;    
 }
-
-
