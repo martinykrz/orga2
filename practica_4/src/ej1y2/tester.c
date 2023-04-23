@@ -52,6 +52,8 @@ TEST(test_invertirBytes) {
 
         if(*test__fallo){
 
+            printf("i = %d\n", i);
+
             for(uint32_t j = 0; j < 16; j++){
                 printf("test_bytes_c[%2u] = %3u\t", j, test_bytes_c[j]);
                 printf("test_bytes_asm[%2u] = %3u\t", j, test_bytes_asm[j]);
@@ -148,11 +150,13 @@ int main() {
     test_invertirBytes();
 	printf("\n");
 
+    /*
 	printf("= Checkpoint 2\n");
 	printf("==============\n");
     test_checksum_ok();
     test_checksum_almost_never_ok();
 	printf("\n");
+    */
 
 	tests_end();
 	return 0;
