@@ -5,29 +5,43 @@ global cesar
 cesar:
     push rbp
     mov rbp, rsp
-    mov rcx, 0
-    mov rdx, 0
+    mov rax, 0
+    mov rcx, 4
 
-    .modulo:
-        cmp rsi, 26
-        jl .cifrado
-        sub rsi, 26
-        jmp .modulo
+    mov rax, [rdi]
+    .cycle:
+        add rax, rsi
+        shl rsi, 8
+    loop .cycle
 
-    .cifrado:
-        ;TODO
-        ; Length of rdi
-        ; Subtract rsp with length
-        ; Add to the stack
-        cmp [rdi + rcx], byte 0
-        je .end
-        mov dl, byte [rdi + rcx]
-        add dl, sil
-        inc rcx
-        jmp .cifrado
+    ; .modulo:
+    ;     cmp rsi, 26
+    ;     jl .length
+    ;     sub rsi, 26
+    ;     jmp .modulo
 
-    .end:
-        mov rax, rdi
+    ; .length:
+    ;     cmp [rdi + rcx], byte 0
+    ;     je .cifrado
+    ;     inc rcx
+    ;     jmp .length
 
+    ; .zero:
+    ;     dec rcx 
+    ;     jmp .cifrado
+
+    ; .cifrado:
+    ;     add al, [rdi + rcx]
+    ;     cmp al, byte 0
+    ;     je .zero
+    ;     add al, sil
+    ;     shl rax, 8
+    ; loop .cifrado
+
+    ; add al, [rdi]
+    ; add al, sil
+
+    mov [rdi], rax
+    
     pop rbp
     ret
