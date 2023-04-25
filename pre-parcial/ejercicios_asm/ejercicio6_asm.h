@@ -4,3 +4,4 @@
 #include <string.h>
 
 char* cesar(char* s, uint8_t n);
+void clean(char* s);
