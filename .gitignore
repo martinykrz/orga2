@@ -1,5 +1,6 @@
 *.o
-*.out
+main
+tester
 .gdb_*
 *.pdf
 tmp/*
