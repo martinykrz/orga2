@@ -1,47 +1,67 @@
+extern malloc
+extern free
+
 section .text
 
 global cesar
+global clean
 
 cesar:
     push rbp
     mov rbp, rsp
-    mov rax, 0
-    mov rcx, 4
+    mov rcx, 0
 
-    mov rax, [rdi]
+    .modulo:
+        cmp rsi, 26
+        jl .length
+        sub rsi, 26
+        jmp .modulo
+
+    .length:
+        cmp [rdi + rcx], byte 0
+        jz .copy
+        inc rcx
+        jmp .length
+
+    .copy:
+        push rdi
+        push rsi
+        inc rcx
+        push rcx
+        mov rdi, rcx
+
+        sub rsp, 8
+        call malloc wrt ..plt
+        add rsp, 8
+
+        pop rcx
+        pop rsi
+        pop rdi
+
+        push rsi
+        push rcx
+
+        mov rsi, rdi
+        mov rdi, rax
+        rep movsb
+
+        pop rcx
+        dec rcx
+        pop rsi
+
     .cycle:
-        add rax, rsi
+        add [rax], rsi
         shl rsi, 8
     loop .cycle
 
-    ; .modulo:
-    ;     cmp rsi, 26
-    ;     jl .length
-    ;     sub rsi, 26
-    ;     jmp .modulo
+    pop rbp
+    ret
 
-    ; .length:
-    ;     cmp [rdi + rcx], byte 0
-    ;     je .cifrado
-    ;     inc rcx
-    ;     jmp .length
+clean:
+    push rbp
+    mov rbp, rsp
 
-    ; .zero:
-    ;     dec rcx 
-    ;     jmp .cifrado
+    call free wrt ..plt
 
-    ; .cifrado:
-    ;     add al, [rdi + rcx]
-    ;     cmp al, byte 0
-    ;     je .zero
-    ;     add al, sil
-    ;     shl rax, 8
-    ; loop .cifrado
-
-    ; add al, [rdi]
-    ; add al, sil
-
-    mov [rdi], rax
-    
     pop rbp
     ret
