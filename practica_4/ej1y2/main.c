@@ -29,7 +29,7 @@ int main (void){
         shuffle(256);
         uint8_t m = shuffle_int(0,16);
         uint8_t n = shuffle_int(0,16);
-        printf("(%d, %d)\n", n, m);
+        printf("%d: (%d, %d)\n", i, n, m);
         printf("[");
         for (int j=0; j < 16; j++){
             bytes[j] = x[j];
@@ -42,7 +42,7 @@ int main (void){
             printf("%d, ", bytes[k]);
         }
         printf("]\n");
-        free(bytes);
-        return 0;    
+        free(bytes);    
     }
+    return 0;
 }
