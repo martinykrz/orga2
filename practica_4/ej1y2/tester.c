@@ -150,13 +150,11 @@ int main() {
     test_invertirBytes();
 	printf("\n");
 
-    /*
 	printf("= Checkpoint 2\n");
 	printf("==============\n");
     test_checksum_ok();
     test_checksum_almost_never_ok();
 	printf("\n");
-    */
 
 	tests_end();
 	return 0;
