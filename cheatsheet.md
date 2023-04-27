@@ -112,13 +112,15 @@ Region de la pila comprendida entre los parametros recibidos y el tope de la pil
 <!-- TODO: Ver foto pila, hacer un ejemplo -->
 
 ### SIMD
-* Load/Store
-* Aritmeticas
-* Punto Flotante
-* Aritmeticas Horizontales
-* Comparacion
-* Empaquetado
-* Desempaquetado
-* Shuffles
-* Blend
-* Conversion
+* [Load/Store](simd/load_store.md)
+* [Aritmeticas](simd/aritmeticas.md)
+* [Punto Flotante](simd/punto_flotante.md)
+* [Aritmeticas Horizontales](simd/horizontales.md)
+* [Logicas](simd/logicas.md)
+* [Comparacion](simd/comparacion.md)
+* [Empaquetado](simd/empaquetado.md)
+* [Desempaquetado](simd/desempaquetado.md)
+* [Shuffles](simd/shuffle.md)
+* [Insert/Extract](simd/insert_extract.md)
+* [Blend](simd/blend.md)
+* [Conversion](simd/conversion.md)
