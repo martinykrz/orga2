@@ -114,8 +114,6 @@ Region de la pila comprendida entre los parametros recibidos y el tope de la pil
 ### SIMD
 * [Load/Store](simd/load_store.md)
 * [Aritmeticas](simd/aritmeticas.md)
-* [Punto Flotante](simd/punto_flotante.md)
-* [Aritmeticas Horizontales](simd/horizontales.md)
 * [Logicas](simd/logicas.md)
 * [Comparacion](simd/comparacion.md)
 * [Empaquetado](simd/empaquetado.md)

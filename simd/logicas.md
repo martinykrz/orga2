@@ -1,4 +1,17 @@
 # Logicas
+
+## Table of Content
+- [Integers](#integers)
+- [Float Point](#float-point)
+    - [Single](#single)
+    - [Double](#double)
+- [Shift](#shift)
+    - [Left](#left)
+    - [Right](#right)
+        - [Logical](#logical)
+        - [Aritmethical](#aritmethical)
+
+## Integers
 * ***P***acked, xmm0 ***AND*** xmm1
 ```asm
 pand xmm0, xmm1
@@ -15,6 +28,10 @@ por xmm0, xmm1
 ```asm
 pxor xmm0, xmm1
 ```
+
+## Float Point
+
+### Single
 * xmm0 ***AND*** xmm1 for ***P***acked 32-bit float (***S***ingle precision)
 ```asm
 andps xmm0, xmm1
@@ -31,6 +48,8 @@ orps xmm0, xmm1
 ```asm
 xorps xmm0, xmm1
 ```
+
+### Double
 * xmm0 ***AND*** xmm1 for ***P***acked 64-bit float (***D***ouble precision)
 ```asm
 andps xmm0, xmm1
@@ -47,6 +66,10 @@ orps xmm0, xmm1
 ```asm
 xorps xmm0, xmm1
 ```
+
+## Shift
+
+### Left
 * ***P***acked, ***S***hift ***L***eft ***L***ogical each ***W***ord by bit
 ```asm
 psllw xmm0, CTE
@@ -63,6 +86,10 @@ psllq xmm0, CTE
 ```asm
 pslldq xmm0, CTE
 ```
+
+### Right
+
+#### Logical
 * ***P***acked, ***S***hift ***R***ight ***L***ogical each ***W***ord by bit
 ```asm
 psllw xmm0, CTE
@@ -79,6 +106,8 @@ psllq xmm0, CTE
 ```asm
 pslldq xmm0, CTE
 ```
+
+#### Aritmethical
 * ***P***acked, ***S***hift ***R***ight ***A***ritmethically each ***W***ord by bit
 ```asm
 psraw xmm0, CTE

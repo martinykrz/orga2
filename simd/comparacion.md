@@ -35,6 +35,7 @@ pcmpgtq xmm0, xmm1
 * ***CMP*** xmm0 ***XX*** xmm1 ***S***calar ***S***ingle precision
 * ***CMP*** xmm0 ***XX*** xmm1 ***P***acked ***D***ouble precision
 * ***CMP*** xmm0 ***XX*** xmm1 ***S***calar ***D***ouble precision
+
 | ***XX*** | ***CMP*** |
 | :---: | :---: |
 | ***EQ*** | `A = B` |
@@ -45,6 +46,7 @@ pcmpgtq xmm0, xmm1
 | ***NLT*** | `not(A < B)` |
 | ***NLE*** | `not(A <= B)` |
 | ***ORD*** | `A, B = ordered` |
+
 * ***COM***pare if ***I***n order a ***S***calar ***S***ingle precision
 ```asm
 comiss xmm0, xmm1
