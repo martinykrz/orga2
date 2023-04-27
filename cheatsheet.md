@@ -102,6 +102,7 @@ push reg ; Se desalinea a 8
 ### Epilogo
 Es donde restauramos los valores de los registros no volatiles y devolcemos la pila a su estado inicial
 ```asm
+...
 pop reg
 pop rbp
 ret
