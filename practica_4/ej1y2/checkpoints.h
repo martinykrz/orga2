@@ -4,9 +4,9 @@
 #include <stdint.h>	//contiene la definición de tipos enteros ligados a tamaños int8_t, int16_t, uint8_t,...
 
 typedef struct data_s{
-    uint16_t a[8];
-    uint16_t b[8];
-    uint32_t c[8];
+    uint16_t a[8]; // 0
+    uint16_t b[8]; // 16
+    uint32_t c[8]; // 32
 } data_t;
 
 void invertirBytes_c(uint8_t* p, uint8_t n, uint8_t m);

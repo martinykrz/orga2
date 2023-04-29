@@ -3,7 +3,7 @@ CFLAGS= -std=c11 -Wall -Wextra -pedantic -O0 -g -lm -Wno-unused-variable -Wno-un
 NASM=nasm
 NASMFLAGS=-f elf64 -g -F DWARF
 
-all: main tester
+all: main tester 
 
 OBJS := checkpoint1_c.o checkpoint1_asm.o checkpoint2_c.o checkpoint2_asm.o
 
@@ -33,3 +33,11 @@ clean:
 	rm -f main tester
 	rm -f salida.propios.*
 
+refresh:
+	make clean && make main
+
+run:
+	make refresh && ./main
+
+debug:
+	make refresh && gdb -q main
