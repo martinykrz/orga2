@@ -74,8 +74,7 @@ strClone:
     mov rdi, rax
 
     sub rsp, 8
-    ; wrt ..plt -> no se que es pero sin esto, no compila
-    call malloc wrt ..plt  
+    call malloc 
     add rsp, 8
 
     pop rcx
@@ -94,7 +93,7 @@ strDelete:
     push rbp
     mov rbp, rsp
 
-    call free wrt ..plt
+    call free
 
     pop rbp
 	ret
@@ -102,32 +101,32 @@ strDelete:
 ; void strPrint(char* a, FILE* pFile)
 strPrint:
     ; SIGFAULT, dont'know why
-    ; push rbp
-    ; mov rbp, rsp
+    push rbp
+    mov rbp, rsp
 
-    ; push rdi
-    ; push rsi
+    push rdi
+    push rsi
 
-    ; mov rdi, rsi
-    ; cmp [rsp + 0x8], byte 0
-    ; je .null
-    ; mov rsi, [rsp + 0x8]
-    ; mov rdx, hello
-    ; jmp .main
+    mov rdi, rsi
+    cmp [rsp + 0x8], byte 0
+    je .null
+    mov rsi, [rsp + 0x8]
+    mov rdx, hello
+    jmp .main
     
-    ; .null:
-    ;     mov rsi, format
-    ;     mov rdx, null
+    .null:
+        mov rsi, format
+        mov rdx, null
 
-    ; .main:
-    ;     sub rsp, 8
-    ;     call fprintf wrt ..plt
-    ;     add rsp, 8
+    .main:
+        sub rsp, 8
+        call fprintf 
+        add rsp, 8
 
-    ; pop rsi
-    ; pop rdi
+    pop rsi
+    pop rdi
 
-    ; pop rbp
+    pop rbp
 	ret
 
 ; uint32_t strLen(char* a)
