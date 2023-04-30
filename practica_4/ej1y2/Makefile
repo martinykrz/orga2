@@ -37,7 +37,9 @@ refresh:
 	make clean && make main
 
 run:
-	make refresh && ./main
+	make refresh
+	./main > res.txt
+	bat res.txt
 
 debug:
 	make refresh && gdb -q main
