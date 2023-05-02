@@ -85,7 +85,7 @@ cuantosTemplosClasicos:
         add rcx, 0x18 ; 0x18 -> tamaño del struct
         inc rdx
         jmp .ciclo
-         
+        
     .clasico:
         inc rax
         add rcx, 0x18
