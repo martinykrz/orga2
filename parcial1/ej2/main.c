@@ -6,7 +6,7 @@
 
 #include "ej2.h"
 
-#define N 4
+#define N 20
 
 static uint32_t a[N][N];
 static uint32_t b[N][N];
@@ -14,25 +14,25 @@ static uint32_t c[N][N];
 
 void shuffle(uint32_t max){
 	for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++){
+        for (int j = 0; j < N; j++) {
 		    a[i][j] = (uint32_t) rand() % max;
             b[i][j] = (uint32_t) rand() % max;
-            if ( j % 2 == 0){
+            if (j % 2 == 0){
                 c[i][j] = a[i][j];
-            }else{
+            } else {
                 c[i][j] = b[i][j];
             }
         }
 	}
 }
 
-uint32_t shuffle_int(uint32_t min, uint32_t max){
+uint32_t shuffle_int(uint32_t min, uint32_t max) {
 	return (uint32_t) (rand() % (max + 1)) + min;
 }
 
-int main (void){
+int main (void) {
 	/* Acá pueden realizar sus propias pruebas */
-	shuffle(10);
+	shuffle(INT32_MAX);
 	uint8_t *result = malloc(N*N);
     miraQueCoincidencia((uint8_t*)a,(uint8_t*)a,N,result);
 
@@ -42,7 +42,5 @@ int main (void){
 		}
     }
 	printf("\n");
-	return 0;    
+	return 0;
 }
-
-
