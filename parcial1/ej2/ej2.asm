@@ -10,9 +10,39 @@ section .text
 miraQueCoincidencia:
     push rbp
     mov rbp, rsp
-    pxor xmm0, xmm0
-    pxor xmm1, xmm1
 
+    xor r8, r8
+    xor r9, r9
+
+    mov r8, [rdi]
+    mov r9, [rsi]
+    cmp r8, r9
+    je .equal
+
+    .equal:
+        push r12
+        push r13
+
+        xor r9, r9
+        pxor xmm0, xmm0
+        pxor xmm1, xmm1
+        pxor xmm2, xmm2
+        pxor xmm3, xmm3
+
+        movdqu xmm0, r8
+
+        .cycle:
+            pextrb r9, xmm0, 0
+            psrldq xmm0, 1
+            movdqu xmm1, r9 ; if blue
+            movdqu xmm2, r9 ; if green
+            movdqu xmm3, r9 ; if red
+            mov r12, r9 ; if a_1
+            mov r13, r9 ; if a_2
+            jmp .cycle
+        
+        .operacion:
+            call cuentas
     ;TODO
     ; En un ciclo, 
     ;   * Almacenar en un xmm A y B
