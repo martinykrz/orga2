@@ -7,9 +7,7 @@ Offset_asm:
     push rbp
     mov rbp, rsp
 
-    pxor xmm0, xmm0
-
-    movlqu xmm0, [rdi]
+    ;TODO
 
     pop rbp
 	ret

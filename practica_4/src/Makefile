@@ -35,6 +35,3 @@ $(BUILD_DIR)/%.o: %.c
 
 clean:
 	rm -fr $(BUILD_DIR)/*
-
-
-

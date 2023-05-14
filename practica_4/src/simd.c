@@ -92,9 +92,6 @@ void correr_filtro_imagen(configuracion_t *config, aplicador_fn_t aplicador) {
     imagenes_flipVertical(&config->dst, dst_img);
 
     imagenes_guardar(config);
-    imagenes_liberar(config);
+    imagenes_liberar();
     imprimir_tiempos_ejecucion(start, end, config->cant_iteraciones);
 }
-
-
-
