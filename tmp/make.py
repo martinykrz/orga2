@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import subprocess
+import argparse
 
 def compile_asm():
     asm_files = [f for f in os.listdir() if f.endswith('.asm')]
@@ -65,6 +66,8 @@ def compile_c_files():
     return None
 
 def make():
+    if not os.path.exists("build/"):
+        os.mkdir("build/")
     compile_asm()
     compile_filters()
     compile_c_files()
@@ -88,5 +91,51 @@ def make():
     subprocess.run(command)
     return None
 
-if __name__ == "__main__":
+def clean():
+    for file in os.listdir("build/"):
+        file_path = os.path.join("build/", file)
+        if os.path.isfile(file_path):
+            os.remove(file_path)
+    return None
+
+def main():
+    subprocess.run(["./build/main"])
+    return None
+
+def refresh():
+    clean()
     make()
+    return None
+
+def rerun():
+    refresh()
+    main()
+    return None
+
+def debug():
+    subprocess.run([
+        "gdb",
+        "-q",
+        "./build/main"
+        ])
+    return None
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", "--run", help="Run program [make/clean/refresh/main/rerun/debug]", type=str)
+    args = parser.parse_args()
+    match args.run:
+        case "make":
+            make()
+        case "clean":
+            clean()
+        case "main":
+            main()
+        case "refresh":
+            refresh()
+        case "rerun":
+            rerun()
+        case "debug":
+            debug()
+        case _:
+            parser.print_help()
