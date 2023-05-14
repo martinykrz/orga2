@@ -3,5 +3,4 @@ main
 tester
 .gdb_*
 *.pdf
-tmp/*
 *.log
