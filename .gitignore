@@ -1,5 +1,6 @@
 *.o
 main
+tmp/build/*
 tester
 .gdb_*
 *.pdf
