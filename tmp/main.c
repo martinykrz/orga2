@@ -17,7 +17,8 @@ int main() {
     filtros[1] = Sharpen;
 
     configuracion_t config;
-    config.archivo_entrada = "";
+    config.archivo_entrada = "img/paisaje.bmp";
+    config.archivo_entrada_2 = NULL;
     config.dst.width = 0;
     config.bits_src = 32;
     config.bits_dst = 32;
@@ -25,9 +26,10 @@ int main() {
     config.verbose = false;
     config.frames = false;
     config.nombre = false;
-    config.cant_iteraciones = 1;
+    config.cant_iteraciones = 5;
     config.carpeta_salida = ".";
     config.extra_archivo_salida = "";
+    config.tipo_filtro = 1;
 
     filtro_t *filtro = &filtros[0]; // 0->Offset, 1->Sharpen
     correr_filtro_imagen(&config, filtro->aplicador);
@@ -46,6 +48,7 @@ void correr_filtro_imagen(configuracion_t* config, aplicador_fn_t aplicador) {
         aplicador(config);
     }
 
+    imagenes_flipVertical(&config->dst, dst_img);
     imagenes_flipVertical(&config->dst, dst_img);
 
     imagenes_guardar(config);
