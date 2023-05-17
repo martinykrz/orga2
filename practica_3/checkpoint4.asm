@@ -2,11 +2,6 @@ extern malloc
 extern free
 extern fprintf
 
-section .data
-format db "%s", 0
-null db "NULL", 10
-hello db "Hello", 10
-
 section .text
 
 global strCmp
@@ -62,29 +57,29 @@ strClone:
     push rbp
     mov rbp, rsp
     
-    push rdi ; guarda mensaje en la pila
+    push r12
+    push r13
+
+    mov r13, rdi ; guarda mensaje en la pila
     
-    sub rsp, 8
     call strLen
-    add rsp, 8
     
     inc rcx
-    push rcx ; guarda la longitud
+    mov r12, rcx ; guarda la longitud
     inc rax
     mov rdi, rax
 
-    sub rsp, 8
     call malloc 
-    add rsp, 8
 
-    pop rcx
-    pop rdi
+    mov rcx, r12
 
-    mov rsi, rdi ; mensaje
+    mov rsi, r13 ; mensaje
     mov rdi, rax ; destino
     ; movsb no toma parametros, directamente agarra (r/e)si y (r/e)di
     rep movsb ; mueve un byte (char) rcx-veces y lo guarda en rdi
     
+    pop r13
+    pop r12
     pop rbp
 	ret
 
@@ -100,32 +95,20 @@ strDelete:
 
 ; void strPrint(char* a, FILE* pFile)
 strPrint:
-    ; SIGFAULT, dont'know why
     push rbp
     mov rbp, rsp
 
-    push rdi
-    push rsi
+    push r12
+    sub rsp, 8
 
+    mov r12, rdi
     mov rdi, rsi
-    cmp [rsp + 0x8], byte 0
-    je .null
-    mov rsi, [rsp + 0x8]
-    mov rdx, hello
-    jmp .main
+    mov rsi, r12
     
-    .null:
-        mov rsi, format
-        mov rdx, null
-
-    .main:
-        sub rsp, 8
-        call fprintf 
-        add rsp, 8
-
-    pop rsi
-    pop rdi
-
+    call fprintf
+    
+    add rsp, 8
+    pop r12
     pop rbp
 	ret
 

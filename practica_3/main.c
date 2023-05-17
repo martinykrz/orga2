@@ -14,7 +14,7 @@ int main (void){
     if (fp == NULL) {
         return 1;
     }
-    strPrint("%s", fp);
+    strPrint("Hello, World!\n", fp);
     //fprintf(fp, "%s", "Hello, World!\n");
     fclose(fp);
     return 0;    
