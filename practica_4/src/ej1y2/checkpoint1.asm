@@ -82,7 +82,7 @@ makeMasks:
     ; insert a 0xff to later apply mask
     mov rcx, 0xff
     movq xmm1, rcx
-    movaps xmm2, xmm1
+    movdqa xmm2, xmm1
 
     .mask_n:
         cmp rsi, byte 0
