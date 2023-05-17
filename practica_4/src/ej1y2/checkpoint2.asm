@@ -37,7 +37,7 @@ checksum_asm:
         packusdw xmm5, xmm3 ; packed on back
         paddw xmm2, xmm5 ; packed c from double -> word
 
-        pcmpeqw xmm0, xmm2
+        pcmpeqw xmm0, xmm2 ; compare operation with c
 
         xor r8, r8
         xor r9, r9
