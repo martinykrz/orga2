@@ -5,3 +5,4 @@ tester
 .gdb_*
 *.pdf
 *.log
+*.txt
