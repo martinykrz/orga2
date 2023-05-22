@@ -29,7 +29,7 @@ int main() {
     config.cant_iteraciones = 5;
     config.carpeta_salida = ".";
     config.extra_archivo_salida = "";
-    config.tipo_filtro = 1;
+    config.tipo_filtro = 1; // 0: C, 1: ASM
 
     filtro_t *filtro = &filtros[0]; // 0->Offset, 1->Sharpen
     correr_filtro_imagen(&config, filtro->aplicador);
@@ -52,5 +52,5 @@ void correr_filtro_imagen(configuracion_t* config, aplicador_fn_t aplicador) {
     imagenes_flipVertical(&config->dst, dst_img);
 
     imagenes_guardar(config);
-    imagenes_liberar();
+    // imagenes_liberar();
 }
