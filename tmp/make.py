@@ -98,18 +98,8 @@ def clean():
             os.remove(file_path)
     return None
 
-def main():
+def rn():
     subprocess.run(["./build/main"])
-    return None
-
-def refresh():
-    clean()
-    make()
-    return None
-
-def rerun():
-    refresh()
-    main()
     return None
 
 def debug():
@@ -120,22 +110,27 @@ def debug():
         ])
     return None
 
+def main(mk: bool, run: bool, dbg: bool, all: bool):
+    if mk:
+        clean()
+        make()
+    elif run:
+        rn()
+    elif dbg:
+        debug()
+    elif all:
+        clean()
+        make()
+        rn()
+        debug()
+    else:
+        print("No flag activated")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-r", "--run", help="Run program [make/clean/refresh/main/rerun/debug]", type=str)
+    parser.add_argument("-m", "--make", action='store_true', help="Make objs and exe")
+    parser.add_argument("-r", "--run", action='store_true', help="Run exe")
+    parser.add_argument("-d", "--debug", action='store_true', help="Debug program")
+    parser.add_argument("-a", "--all", action='store_true', help="Make, run and debug")
     args = parser.parse_args()
-    match args.run:
-        case "make":
-            make()
-        case "clean":
-            clean()
-        case "main":
-            main()
-        case "refresh":
-            refresh()
-        case "rerun":
-            rerun()
-        case "debug":
-            debug()
-        case _:
-            parser.print_help()
+    main(mk=args.make, run=args.run, dbg=args.debug, all=args.all)
