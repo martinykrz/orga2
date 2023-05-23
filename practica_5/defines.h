@@ -38,13 +38,13 @@
 
 /* COMPLETAR - Valores para los selectores de segmento de la GDT 
  * Definirlos a partir de los índices de la GDT, definidos más arriba 
- * Hint: usar operadores "<<" y "|" (shift y or) */
+ * Hint: usar operadores "<<" y "|" (shift y or) 
+*/
 
-//#define GDT_CODE_0_SEL ??
-//#define GDT_DATA_0_SEL ??
-//#define GDT_CODE_3_SEL ??
-//#define GDT_DATA_3_SEL ??
-
+#define GDT_CODE_0_SEL (GDT_IDX_CODE_0 << 3)
+#define GDT_DATA_0_SEL (GDT_IDX_DATA_0 << 3)
+#define GDT_CODE_3_SEL (GDT_CODE_0_SEL | 3)
+#define GDT_DATA_3_SEL (GDT_DATA_0_SEL | 3)
 
 // Macros para trabajar con segmentos de la GDT.
 
@@ -61,10 +61,10 @@
 #define GDT_BASE_HIGH(base) (uint8_t)((((uint32_t)(base)) >> 24) & 0xFF)
 
 /* COMPLETAR - Valores de atributos */ 
-//#define DESC_CODE_DATA ??
-//#define DESC_SYSTEM    ??
-//#define DESC_TYPE_EXECUTE_READ ??
-//#define DESC_TYPE_READ_WRITE   ??
+#define DESC_CODE_DATA 1
+#define DESC_SYSTEM    0
+#define DESC_TYPE_EXECUTE_READ 2 //((DESC_CODE_DATA << 3) | 2)
+#define DESC_TYPE_READ_WRITE   2 //((DESC_SYSTEM << 3) | 2)
 
 /* COMPLETAR - Tamaños de segmentos */ 
 //#define FLAT_SEGM_SIZE   ??
@@ -82,4 +82,4 @@
 #define VIDEO 0x000B8000
 
 
-#endif //  __DEFINES_H__
+#endif //  __DEFINES_HC
