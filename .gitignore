@@ -10,3 +10,4 @@ tester
 *.elf
 *.d
 *.sym
+*.img
