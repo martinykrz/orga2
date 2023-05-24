@@ -57,7 +57,9 @@ start:
     lgdt [GDT_DESC]
 
     ; Setea el bit PE del registro CR0
-    ; or cr0, 1
+    mov eax, cr0
+    or eax, 1
+    mov cr0, eax
 
     ; COMPLETAR - Saltar a modo protegido (far jump)
     ; (recuerden que un far jmp se especifica como jmp CS_selector:address)
