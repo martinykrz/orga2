@@ -6,3 +6,7 @@ tester
 *.pdf
 *.log
 *.txt
+*.bin
+*.elf
+*.d
+*.sym
