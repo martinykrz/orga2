@@ -64,7 +64,7 @@
 #define DESC_CODE_DATA 1
 #define DESC_SYSTEM    0
 #define DESC_TYPE_EXECUTE_READ 10
-#define DESC_TYPE_READ_WRITE   6 
+#define DESC_TYPE_READ_WRITE   2 //6 
 
 /* COMPLETAR - Tamaños de segmentos */ 
 #define FLAT_SEGM_SIZE   1024*1024*817
