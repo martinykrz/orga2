@@ -37,29 +37,27 @@ start_pm_len equ    $ - start_pm_msg
 ;; Punto de entrada del kernel.
 BITS 16
 start:
-    ; COMPLETAR - Deshabilitar interrupciones
+    ; Deshabilita interrupciones
     cli
 
-    ; Cambiar modo de video a 80 X 50
+    ; Cambia modo de video a 80 X 50
     mov ax, 0003h
     int 10h ; set mode 03h
     xor bx, bx
     mov ax, 1112h
     int 10h ; load 8x8 font
 
-    ; COMPLETAR - Imprimir mensaje de bienvenida - MODO REAL
-    ; (revisar las funciones definidas en print.mac y los mensajes se encuentran en la
-    ; sección de datos)
+    ; Imprime mensaje de bienvenida - MODO REAL - (print.mac func)
     print_text_rm start_rm_msg, start_rm_len, 1, 0, 0
 
-    ; COMPLETAR - Habilitar A20
-    ; (revisar las funciones definidas en a20.asm)
+    ; Habilita A20 (a20.asm)
     call A20_enable
 
-    ; COMPLETAR - Cargar la GDT
+    ; Carga la GDT
     lgdt [GDT_DESC]
 
-    ; COMPLETAR - Setear el bit PE del registro CR0
+    ; Setea el bit PE del registro CR0
+    or cr0, 1
 
     ; COMPLETAR - Saltar a modo protegido (far jump)
     ; (recuerden que un far jmp se especifica como jmp CS_selector:address)
