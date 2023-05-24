@@ -9,6 +9,8 @@ global start
 
 
 ; COMPLETAR - Agreguen declaraciones extern según vayan necesitando
+extern GDT_DESC
+extern A20_enable
 
 ; COMPLETAR - Definan correctamente estas constantes cuando las necesiten
 ;%define CS_RING_0_SEL ??   
@@ -36,7 +38,7 @@ start_pm_len equ    $ - start_pm_msg
 BITS 16
 start:
     ; COMPLETAR - Deshabilitar interrupciones
-
+    cli
 
     ; Cambiar modo de video a 80 X 50
     mov ax, 0003h
@@ -48,11 +50,14 @@ start:
     ; COMPLETAR - Imprimir mensaje de bienvenida - MODO REAL
     ; (revisar las funciones definidas en print.mac y los mensajes se encuentran en la
     ; sección de datos)
+    print_text_rm start_rm_msg, start_rm_len, 1, 0, 0
 
     ; COMPLETAR - Habilitar A20
     ; (revisar las funciones definidas en a20.asm)
+    call A20_enable
 
     ; COMPLETAR - Cargar la GDT
+    lgdt [GDT_DESC]
 
     ; COMPLETAR - Setear el bit PE del registro CR0
 

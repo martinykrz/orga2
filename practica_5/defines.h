@@ -63,12 +63,12 @@
 /* COMPLETAR - Valores de atributos */ 
 #define DESC_CODE_DATA 1
 #define DESC_SYSTEM    0
-#define DESC_TYPE_EXECUTE_READ 2 //((DESC_CODE_DATA << 3) | 2)
-#define DESC_TYPE_READ_WRITE   2 //((DESC_SYSTEM << 3) | 2)
+#define DESC_TYPE_EXECUTE_READ 10
+#define DESC_TYPE_READ_WRITE   6 
 
 /* COMPLETAR - Tamaños de segmentos */ 
-//#define FLAT_SEGM_SIZE   ??
-//#define VIDEO_SEGM_SIZE  ??
+#define FLAT_SEGM_SIZE   1024*1024*817
+#define VIDEO_SEGM_SIZE  50*80*2 //50x80 * 2 bytes
 
 
 /* Direcciones de memoria */
