@@ -9,6 +9,7 @@ global Offset_asm
 ;   int dst_row_size [r9]
 ;)
 ; sizeof(bgra_t) = 4 => (value, offset): (b, 0), (g, 1), (r, 2), (a, 3)
+; [rdi + i*src_row_size + j]
 Offset_asm:
     push rbp
     mov rbp, rsp
