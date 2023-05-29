@@ -57,24 +57,24 @@ Offset_asm:
             add r15, 0x8
             
             add r14, r13
-            movdqu xmm1, [rdi + r14]
+            movdqu xmm1, [rdi + r14] ; src[i+8][j]
             sub r14, r13
             
             xor rax, rax
             add rax, r12
             imul rax, r8
             add rax, r15
-            movdqu xmm2, [rdi + rax]
+            movdqu xmm2, [rdi + rax] ; src[i][j+8]
             
             add r14, r15
-            movdqu xmm3, [rdi + r14]
+            movdqu xmm3, [rdi + r14] ; src[i+8][j+8]
             sub r14, r15
             
             xor rax, rax
             add rax, r12
             imul rax, r9
             add rax, r13
-            movdqu xmm4, [rsi + rax]
+            movdqu xmm4, [rsi + rax] ; dst[i][j]
             
             inc r13
             jmp .iter_j
