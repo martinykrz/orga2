@@ -79,12 +79,14 @@ modo_protegido:
     mov fs, ax
     mov ss, ax
 
-    ; COMPLETAR - Establecer el tope y la base de la pila
+    ; Establecer el tope y la base de la pila
+    mov esp, 0x25000
+    mov ebp, esp
 
     ; Imprime mensaje de bienvenida - MODO PROTEGIDO
     print_text_pm start_pm_msg, start_pm_len, 1, 0, 0
 
-    ; COMPLETAR - Inicializar pantalla
+    ; Inicializar pantalla
     call screen_draw_layout
    
     ; Ciclar infinitamente 
