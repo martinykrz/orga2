@@ -90,9 +90,32 @@ modo_protegido:
     ; Inicializar pantalla
     call screen_draw_layout
 
-    ; Cargar idt
+    ; Cargar IDT
     lidt [idt_init]
-   
+
+    ; Inicializacion del PIC
+    ; PIC1
+    mov al, 0x11 ; ICW1: IRQs activas por flanco, Modo cascada, ICW4 Si
+    out 20h, al
+    mov al, 8 ; ICW2: INT base para el PIC1 Tipo 8
+    out 21h, al
+    mov al, 0x4 ; ICW3: PIC1 Master, tiene un Slave conectado a IRQ2
+    out 21h, al
+    mov al, 0x1 ; ICW4: Modo No Buffered, Fin de Interrupcion Normal
+    out 21h, al ;       Deshabilitamos las Interrupciones del PIC1
+    mov al, 0xFF ; OCW1: Set o Clear el IMR ^
+    out 21h, al
+
+    ; PIC2
+    mov al, 0x11 ; ICW1: IRQs activas por flanco, Modo cascada, ICW4 Si
+    out A0h, al
+    mov al, 0x70 ; ICW2: INT base para el PIC1 Tipo 70h
+    out A1h, al
+    mov al, 0x2 ; ICW3: PIC2 Slave, IRQ2 es la linea que envia al Master
+    out A1h, al
+    mov al, 0x1 ; ICW4: Modo No Buffered, Fin de Interrupcion Normal
+    out A1h, al
+
     ; Ciclar infinitamente 
     mov eax, 0xFFFF
     mov ebx, 0xFFFF

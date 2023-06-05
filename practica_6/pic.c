@@ -16,20 +16,22 @@ static __inline __attribute__((always_inline)) void outb(uint32_t port,
 }
 void pic_finish1(void) { outb(PIC1_PORT, 0x20); }
 void pic_finish2(void) {
-  outb(PIC1_PORT, 0x20);
-  outb(PIC2_PORT, 0x20);
+    outb(PIC1_PORT, 0x20);
+    outb(PIC2_PORT, 0x20);
 }
 
 // COMPLETAR: implementar pic_reset()
 void pic_reset() {
+    outb(PIC1_PORT, 0x20);
+    outb(PIC2_PORT, 0x28);
 }
 
 void pic_enable() {
-  outb(PIC1_PORT + 1, 0x00);
-  outb(PIC2_PORT + 1, 0x00);
+    outb(PIC1_PORT + 1, 0x00);
+    outb(PIC2_PORT + 1, 0x00);
 }
 
 void pic_disable() {
-  outb(PIC1_PORT + 1, 0xFF);
-  outb(PIC2_PORT + 1, 0xFF);
+    outb(PIC1_PORT + 1, 0xFF);
+    outb(PIC2_PORT + 1, 0xFF);
 }
