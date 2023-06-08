@@ -85,8 +85,8 @@ void idt_init() {
   IDT_ENTRY0(20);
 
   // COMPLETAR: Interrupciones de reloj y teclado
-  IDT_ENTRY0(32); // Teclado
-  IDT_ENTRY0(33); // Reloj
+  IDT_ENTRY0(32); // Reloj
+  IDT_ENTRY0(33); // Teclado
 
   // COMPLETAR: Syscalls
   IDT_ENTRY3(88);
