@@ -20,7 +20,6 @@ void pic_finish2(void) {
     outb(PIC2_PORT, 0x20);
 }
 
-// COMPLETAR: implementar pic_reset()
 void pic_reset() {
     //PIC1
     outb(PIC1_PORT, 0x11); //Init ICW1 => IRQs activas por flanco, Modo cascada, ICW4 Si
@@ -35,7 +34,6 @@ void pic_reset() {
     outb(PIC2_PORT + 1, 0x02); //IWC3 => PIC1 Master, tiene un Slave conectado a IRQ2
     outb(PIC2_PORT + 1, 0x01); //IWC4 => Modo No Buffered, Fin de Interrupcion Normal
     outb(PIC2_PORT + 1, 0xFF); //OWC1 => Set o Clear IMR
-
 }
 
 void pic_enable() {
