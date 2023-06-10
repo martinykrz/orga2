@@ -239,7 +239,6 @@ static void new_line(unused uint8_t scancode) {
 }
 
 void process_scancode(uint8_t scancode) {
-    scancode = 0x1e; // Proof of point (tmp)
 	struct scancode_info info = scancode_defs[scancode];
 
 	if (info.main_value == '\0') {

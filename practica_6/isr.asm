@@ -131,33 +131,26 @@ _isr32:
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
 global _isr33
-; COMPLETAR: Implementar la rutina
 _isr33:
     pushad
-    in al, 0x60
-    ; TODO: Tiene que haber algo en esta linea para que pueda agarrar el scancode (scancode=0, no importa el input)
-    call process_scancode
     call pic_finish1
+    in al, 0x60
+    push eax
+    call process_scancode
+    add esp, 4
     popad
     iret
 
 ;; Rutinas de atención de las SYSCALLS
 ;; -------------------------------------------------------------------------- ;;
-; TODO: No se como checkar si esto esta bien xd
 global _isr88
-; COMPLETAR: Implementar la rutina
 _isr88:
-    pushad
     mov eax, 0x58
-    popad
     iret
 
 global _isr98
-; COMPLETAR: Implementar la rutina
 _isr98:
-    pushad
     mov eax, 0x62
-    popad
     iret
 
 ; PushAD Order
