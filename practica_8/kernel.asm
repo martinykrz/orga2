@@ -24,9 +24,9 @@ extern mmu_unmap_page
 extern copy_page
 extern tss_init
 extern tasks_screen_draw
-extern sched_init
-extern tasks_init
-
+; extern sched_init
+; extern tasks_init
+;
 ; COMPLETAR - Definan correctamente estas constantes cuando las necesiten
 %define CS_RING_0_SEL  0x08  
 %define DS_RING_0_SEL  0x18  
@@ -131,23 +131,29 @@ modo_protegido:
     call tasks_screen_draw
 
     mov ax, 11 ; GDT_IDX_TASK_INITIAL=11
-    shl ax, 3
+    shl ax, 3 
     ltr ax
 
-    ; Init Scheduler
-    call sched_init
-    call tasks_init
-
-    ; Aceleramos el PIT (Programmable Interrupt Timer)
-    ; El PIT corre a 1193182Hz.
-    ; Cada iteracion del clock decrementa un contador interno, cuando este llega
-    ; a cero se emite la interrupcion. El valor inicial es 0x0 que indica 65536,
-    ; es decir 18.206Hz
-    mov ax, 500
-    out 0x40, al
-    rol ax, 8
-    out 0x40, al
-
+    ; mov ax, 12 ; GDT_IDX_TASK_IDLE=12
+    ; shl ax, 3 
+    ; ltr ax
+    ;
+    jmp 0x60:0
+     
+    ; ; Init Scheduler
+    ; call sched_init
+    ; call tasks_init
+    ;
+    ; ; Aceleramos el PIT (Programmable Interrupt Timer)
+    ; ; El PIT corre a 1193182Hz.
+    ; ; Cada iteracion del clock decrementa un contador interno, cuando este llega
+    ; ; a cero se emite la interrupcion. El valor inicial es 0x0 que indica 65536,
+    ; ; es decir 18.206Hz
+    ; mov ax, 500
+    ; out 0x40, al
+    ; rol ax, 8
+    ; out 0x40, al
+    ;
     sti
 
     ; Ciclar infinitamente 

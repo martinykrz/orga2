@@ -39,9 +39,9 @@ gdt_entry_t tss_gdt_entry_for_task(tss_t* tss) {
         .g = 0,
         .limit_15_0 = sizeof(tss_t) - 1,
         .limit_19_16 = 0x0,
-        .base_15_0 = GDT_BASE_LOW(tss),
-        .base_23_16 = GDT_BASE_MID(tss),
-        .base_31_24 = GDT_BASE_HIGH(tss),
+        // .base_15_0 = 0//GDT_BASE_LOW(tss),
+        // .base_23_16 = 0//GDT_BASE_MID(tss),
+        // .base_31_24 = 0//GDT_BASE_HIGH(tss),
         .p = 1,
         .type = DESC_TYPE_32BIT_TSS, // CODE, Execute-Only, accessed
         .s = DESC_SYSTEM, // 0
@@ -93,6 +93,26 @@ tss_t tss_create_user_task(paddr_t code_start) {
  * Inicializa las primeras entradas de tss (inicial y idle)
  */
 void tss_init(void) {
-    gdt[GDT_IDX_TASK_IDLE] = tss_gdt_entry_for_task(&tss_idle);
-    gdt[GDT_IDX_TASK_INITIAL] = tss_gdt_entry_for_task(&tss_initial);
+    // gdt[GDT_IDX_TASK_INITIAL]= tss_gdt_entry_for_task();
+    gdt[GDT_IDX_TASK_INITIAL].g = 0;
+    gdt[GDT_IDX_TASK_INITIAL].limit_15_0 = sizeof(tss_t) - 1;
+    gdt[GDT_IDX_TASK_INITIAL].limit_19_16 = 0x0;
+    gdt[GDT_IDX_TASK_INITIAL].base_15_0 = GDT_BASE_LOW(&tss_initial);
+    gdt[GDT_IDX_TASK_INITIAL].base_23_16 = GDT_BASE_MID(&tss_initial);
+    gdt[GDT_IDX_TASK_INITIAL].base_31_24 = GDT_BASE_HIGH(&tss_initial);
+    gdt[GDT_IDX_TASK_INITIAL].p = 1;
+    gdt[GDT_IDX_TASK_INITIAL].type = DESC_TYPE_32BIT_TSS; // CODE, Execute-Only, accessed
+    gdt[GDT_IDX_TASK_INITIAL].s = DESC_SYSTEM; // 0
+    gdt[GDT_IDX_TASK_INITIAL].dpl = 0;
+    gdt[GDT_IDX_TASK_IDLE].g = 0;
+    gdt[GDT_IDX_TASK_IDLE].limit_15_0 = sizeof(tss_t) - 1;
+    gdt[GDT_IDX_TASK_IDLE].limit_19_16 = 0x0;
+    gdt[GDT_IDX_TASK_IDLE].base_15_0 = GDT_BASE_LOW(&tss_idle);
+    gdt[GDT_IDX_TASK_IDLE].base_23_16 = GDT_BASE_MID(&tss_idle);
+    gdt[GDT_IDX_TASK_IDLE].base_31_24 = GDT_BASE_HIGH(&tss_idle);
+    gdt[GDT_IDX_TASK_IDLE].p = 1;
+    gdt[GDT_IDX_TASK_IDLE].type = DESC_TYPE_32BIT_TSS; // CODE, Execute-Only, accessed
+    gdt[GDT_IDX_TASK_IDLE].s = DESC_SYSTEM; // 0
+    gdt[GDT_IDX_TASK_IDLE].dpl = 0;
+    // gdt[GDT_IDX_TASK_IDLE] = tss_gdt_entry_for_task(&tss_idle);
 }
