@@ -22,6 +22,10 @@ extern mmu_init_task_dir
 extern mmu_map_page
 extern mmu_unmap_page
 extern copy_page
+extern tss_init
+extern tasks_screen_draw
+extern sched_init
+extern tasks_init
 
 ; COMPLETAR - Definan correctamente estas constantes cuando las necesiten
 %define CS_RING_0_SEL  0x08  
@@ -40,9 +44,6 @@ start_rm_len equ    $ - start_rm_msg
 
 start_pm_msg db     'Iniciando kernel en Modo Protegido'
 start_pm_len equ    $ - start_pm_msg
-
-start_cr3_msg db    'Cambio el CR3'
-start_cr3_len equ   $ - start_cr3_msg
 
 ;;
 ;; Seccion de código.
@@ -99,6 +100,17 @@ modo_protegido:
     ; Imprime mensaje de bienvenida - MODO PROTEGIDO
     print_text_pm start_pm_msg, start_pm_len, 1, 0, 0
 
+    ; Inicializar pantalla
+    call screen_draw_layout
+
+    ; Cargar IDT
+    call idt_init
+    lidt [IDT_DESC]
+
+    ; Inicializacion del PIC
+    call pic_reset
+    call pic_enable
+
     ; Paginacion
     ; Init MMU
     call mmu_init
@@ -114,56 +126,29 @@ modo_protegido:
     or eax, 0x80000000 ; 0x80000000 es 1 con 30 ceros
     mov cr0, eax
 
-    ; Mapping test
-    push 2 ; attrs: R/W=1
-    push 0x00400000 ; phy
-    push 0x0050E000 ; virt
-    mov eax, cr3
-    push eax ; cr3
-    call mmu_map_page ; mapping func
-    ; alinear stack
-    ; cantidad de parametros por tamaño de parametro
-    add esp, 4*4
-    mov byte [0x0050E000], 54
+    ; Init TSS
+    call tss_init
+    call tasks_screen_draw
 
-    ; Unmap test
-    mov eax, cr3
-    push eax
-    push 0x0050E000 ; virt
-    call mmu_unmap_page
-    add esp, 2*4
+    mov ax, 11 ; GDT_IDX_TASK_INITIAL=11
+    shl ax, 3
+    ltr ax
 
-    ; Copy page test
-    push 0x00400000 ; src_addr <- 54
-    push 0x00402000 ; dst_addr <- 0
-    call copy_page
-    add esp, 2*4
+    ; Init Scheduler
+    call sched_init
+    call tasks_init
 
-    ; Fake task test
-    mov ebx, cr3 ; store current CR3
-    push 0x18000
-    call mmu_init_task_dir
-    add esp, 4
+    ; Aceleramos el PIT (Programmable Interrupt Timer)
+    ; El PIT corre a 1193182Hz.
+    ; Cada iteracion del clock decrementa un contador interno, cuando este llega
+    ; a cero se emite la interrupcion. El valor inicial es 0x0 que indica 65536,
+    ; es decir 18.206Hz
+    mov ax, 500
+    out 0x40, al
+    rol ax, 8
+    out 0x40, al
 
-    mov cr3, eax ; eax <- new CR3
-    print_text_pm start_cr3_msg, start_cr3_len, 1, 0, 0
-    mov cr3, ebx ; return the previous CR3
-
-    ; PRIMERO SE INICIALIZA PAGINACION Y DESPUES LO OTRO (IDT, INTS)
-
-    ; Inicializar pantalla
-    call screen_draw_layout
-     
-    ; Cargar IDT
-    call idt_init
-    lidt [IDT_DESC]
-
-    ; Inicializacion del PIC
-    call pic_reset
-    call pic_enable
     sti
-
-    int 98
 
     ; Ciclar infinitamente 
     mov eax, 0xFFFF
