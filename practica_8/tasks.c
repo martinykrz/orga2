@@ -124,7 +124,7 @@ void tasks_screen_update(void) {
   // Clock
   uint32_t ticks = ENVIRONMENT->tick_count;
   print("Ticks:", 0, 49, C_FG_WHITE | C_BG_RED);
-  // print_dec(ticks, 10, 8, 49, C_FG_WHITE | C_BG_RED);
+  print_dec(ticks, 10, 8, 49, C_FG_WHITE | C_BG_RED);
 
   print("Corriendo", 30,  0, C_FG_BLUE | C_BG_BLUE);
   print("Corriendo", 70,  0, C_FG_BLUE | C_BG_BLUE);

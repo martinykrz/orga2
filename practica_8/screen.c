@@ -26,7 +26,7 @@ void print_dec(uint32_t numero, uint32_t size, uint32_t x, uint32_t y,
                uint16_t attr) {
   ca(*p)[VIDEO_COLS] = (ca(*)[VIDEO_COLS])VIDEO; 
   uint32_t i;
-  uint8_t letras[16] = "0123456789";
+  uint8_t letras[10] = "0123456789";
 
   for (i = 0; i < size; i++) {
     uint32_t resto = numero % 10;
