@@ -76,7 +76,7 @@ start:
     or eax, 1
     mov cr0, eax
 
-    ; COMPLETAR - Saltar a modo protegido (far jump)
+    ; Salta a modo protegido (far jump)
     ; (recuerden que un far jmp se especifica como jmp CS_selector:address)
     ; Pueden usar la constante CS_RING_0_SEL definida en este archivo
     jmp CS_RING_0_SEL:modo_protegido
@@ -134,11 +134,11 @@ modo_protegido:
     shl ax, 3 
     ltr ax
 
-    ; mov ax, 12 ; GDT_IDX_TASK_IDLE=12
-    ; shl ax, 3 
-    ; ltr ax
-    ;
-    jmp 0x60:0
+    mov ax, 12 ; GDT_IDX_TASK_IDLE=12
+    shl ax, 3 
+    ltr ax
+
+    ; jmp 0x60:0
      
     ; ; Init Scheduler
     ; call sched_init
