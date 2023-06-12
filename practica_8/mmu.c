@@ -207,7 +207,7 @@ paddr_t mmu_init_task_dir(paddr_t phy_start) {
     */
     paddr_t stack = mmu_next_free_user_page();
     mmu_map_page(cr3, TASK_STACK_BASE - PAGE_SIZE, stack, MMU_U | MMU_W | MMU_P);
-    mmu_map_page(cr3, TASK_STACK_BASE, SHARED, MMU_U | MMU_P);
+    mmu_map_page(cr3, TASK_SHARED_PAGE, SHARED, MMU_U | MMU_P);
 
     return cr3;
 }
