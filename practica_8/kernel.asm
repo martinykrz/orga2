@@ -123,7 +123,7 @@ modo_protegido:
 
     ; Init TSS
     call tss_init
-    ;call tasks_screen_draw
+    call tasks_screen_draw
     
     ; Init Scheduler
     call sched_init
@@ -152,7 +152,7 @@ modo_protegido:
     ltr ax
 
     ; TASK IDLE
-    ;jmp IDLE_SEL:0
+    jmp IDLE_SEL:0
 
     ; Activamos interrupciones
     sti
