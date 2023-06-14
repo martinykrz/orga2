@@ -32,6 +32,9 @@ extern tasks_init
 %define CS_RING_0_SEL  0x08  
 %define DS_RING_0_SEL  0x18  
 
+%define IDLE_SEL  12 << 3
+%define INITIAL_SEL  11 << 3
+
 BITS 16
 ;; Saltear seccion de datos
 jmp start
@@ -103,14 +106,6 @@ modo_protegido:
     ; Inicializar pantalla
     call screen_draw_layout
 
-    ; Cargar IDT
-    call idt_init
-    lidt [IDT_DESC]
-
-    ; Inicializacion del PIC
-    call pic_reset
-    call pic_enable
-
     ; Paginacion
     ; Init MMU
     call mmu_init
@@ -128,29 +123,36 @@ modo_protegido:
 
     ; Init TSS
     call tss_init
-    call tasks_screen_draw
-
-    mov ax, 11 ; GDT_IDX_TASK_INITIAL=11
-    shl ax, 3 
-    ltr ax
-
-    mov ax, 12 ; GDT_IDX_TASK_IDLE=12
-    shl ax, 3 
-    ltr ax
-
+    ;call tasks_screen_draw
+    
     ; Init Scheduler
-    ; call sched_init
-    ; call tasks_init
+    call sched_init
+    call tasks_init
+
+    ; Cargar IDT
+    call idt_init
+    lidt [IDT_DESC]
+
+    ; Inicializacion del PIC
+    call pic_reset
+    call pic_enable
 
     ; Aceleramos el PIT (Programmable Interrupt Timer)
     ; El PIT corre a 1193182Hz.
     ; Cada iteracion del clock decrementa un contador interno, cuando este llega
     ; a cero se emite la interrupcion. El valor inicial es 0x0 que indica 65536,
     ; es decir 18.206Hz
-    ; mov ax, 500
-    ; out 0x40, al
-    ; rol ax, 8
-    ; out 0x40, al
+    mov ax, 10
+    out 0x40, al
+    rol ax, 8
+    out 0x40, al
+    
+    ; TASK INITIAL
+    mov ax, INITIAL_SEL
+    ltr ax
+
+    ; TASK IDLE
+    ;jmp IDLE_SEL:0
 
     ; Activamos interrupciones
     sti
