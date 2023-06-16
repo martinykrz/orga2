@@ -123,7 +123,7 @@ modo_protegido:
 
     ; Init TSS
     call tss_init
-    call tasks_screen_draw
+    ;call tasks_screen_draw
     
     ; Init Scheduler
     call sched_init
@@ -142,7 +142,7 @@ modo_protegido:
     ; Cada iteracion del clock decrementa un contador interno, cuando este llega
     ; a cero se emite la interrupcion. El valor inicial es 0x0 que indica 65536,
     ; es decir 18.206Hz
-    mov ax, 10
+    mov ax, 1500
     out 0x40, al
     rol ax, 8
     out 0x40, al
@@ -152,7 +152,7 @@ modo_protegido:
     ltr ax
 
     ; TASK IDLE
-    jmp IDLE_SEL:0
+    ;jmp IDLE_SEL:0
 
     ; Activamos interrupciones
     sti

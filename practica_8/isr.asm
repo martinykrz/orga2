@@ -140,7 +140,6 @@ ISRNE 20
 ;; Rutina de atención del RELOJ
 ;; -------------------------------------------------------------------------- ;;
 global _isr32
-; COMPLETAR: Implementar la rutina
 _isr32:
     pushad
     ; 1. Le decimos al PIC que vamos a atender la interrupción
@@ -169,7 +168,6 @@ _isr32:
 ;; Rutina de atención del TECLADO
 ;; -------------------------------------------------------------------------- ;;
 global _isr33
-; COMPLETAR: Implementar la rutina
 _isr33:
     pushad
     ; 1. Le decimos al PIC que vamos a atender la interrupción

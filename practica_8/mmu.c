@@ -111,7 +111,7 @@ void mmu_map_page(uint32_t cr3, vaddr_t virt, paddr_t phy, uint32_t attrs) {
         paddr_t new_page_table = mmu_next_free_kernel_page();
         zero_page(new_page_table);
         pd[id_dir].pt = (uint32_t)(new_page_table >> 12);
-        pd[id_dir].attrs = attrs | MMU_P;
+        pd[id_dir].attrs = MMU_U | MMU_W | MMU_P;
     }
 
     // Extract PT address from the PD
@@ -199,7 +199,7 @@ paddr_t mmu_init_task_dir(paddr_t phy_start) {
      * La rutina la hace el usuario (U/S=1)
     */
     for (int i=0; i < TASK_CODE_PAGES; i++) {
-        mmu_map_page(cr3, TASK_CODE_VIRTUAL + i * PAGE_SIZE, phy_start + i * PAGE_SIZE, MMU_U | MMU_P);
+        mmu_map_page(cr3, TASK_CODE_VIRTUAL + (i * PAGE_SIZE), phy_start + (i * PAGE_SIZE), MMU_U | MMU_P);
     }
      
     /* Stack mapping

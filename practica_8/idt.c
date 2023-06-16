@@ -36,7 +36,7 @@ idt_descriptor_t IDT_DESC = {sizeof(idt) - 1, (uint32_t)&idt};
     }
 */
 
-/* COMPLETAR: Dado un numero de de interrupcion asigna a `idt` la entrada
+/* Dado un numero de de interrupcion asigna a `idt` la entrada
  * correspondiente con nivel 0 */
 #define IDT_ENTRY0(numero)                                                     \
   idt[numero] = (idt_entry_t) {                                                \
@@ -48,7 +48,7 @@ idt_descriptor_t IDT_DESC = {sizeof(idt) - 1, (uint32_t)&idt};
     .present = 1                                                               \
   }
 
-/* COMPLETAR: Dado un numero de de interrupcion asigna a `idt` la entrada
+/* Dado un numero de de interrupcion asigna a `idt` la entrada
  * correspondiente con nivel 3 */
 #define IDT_ENTRY3(numero)                                                     \
   idt[numero] = (idt_entry_t) {                                                \
@@ -84,11 +84,11 @@ void idt_init() {
   IDT_ENTRY0(19);
   IDT_ENTRY0(20);
 
-  // COMPLETAR: Interrupciones de reloj y teclado
+  // Interrupciones de reloj y teclado
   IDT_ENTRY0(32); // Reloj
   IDT_ENTRY0(33); // Teclado
 
-  // COMPLETAR: Syscalls
+  // Syscalls
   IDT_ENTRY3(88);
   IDT_ENTRY3(98);
 }

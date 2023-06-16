@@ -42,8 +42,8 @@
 #define GDT_CODE_0_SEL (GDT_IDX_CODE_0 << 3)
 #define GDT_DATA_0_SEL (GDT_IDX_DATA_0 << 3)
 /* | simboliza el OR en bits. Dado que es nivel 3 precisamos que los últimos 2 bits sea el privilegio 0x3*/
-#define GDT_CODE_3_SEL ((GDT_IDX_CODE_3) | 0x3)
-#define GDT_DATA_3_SEL ((GDT_IDX_DATA_3) | 0x3)
+#define GDT_CODE_3_SEL ((GDT_IDX_CODE_3 << 3) | 0x3)
+#define GDT_DATA_3_SEL ((GDT_IDX_DATA_3 << 3) | 0x3)
 
 // Macros para trabajar con segmentos de la GDT.
 
@@ -84,7 +84,7 @@
 
 /* MMU */
 /* -------------------------------------------------------------------------- */
-/* Definan:
+/*
 VIRT_PAGE_OFFSET(X) devuelve el offset dentro de la página, donde X es una dirección virtual
 VIRT_PAGE_TABLE(X)  devuelve la page table entry correspondiente, donde X es una dirección virtual
 VIRT_PAGE_DIR(X)    devuelve el page directory entry, donde X es una dirección virtual

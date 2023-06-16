@@ -49,9 +49,7 @@ static int8_t create_task(tipo_e tipo) {
 
   int8_t task_id = sched_add_task(gdt_id << 3);
   tss_tasks[task_id] = tss_create_user_task(task_code_start[tipo]);
-  //tss_create_user_task(task_id, task_code_start[tipo]);
   gdt[gdt_id] = tss_gdt_entry_for_task(&tss_tasks[task_id]);
-  //tss_gdt_entry_for_task(gdt_id, &tss_tasks[task_id]);
   return task_id;
 }
 

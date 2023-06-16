@@ -61,8 +61,6 @@ void tss_init(void);
 
 extern tss_t tss_tasks[MAX_TASKS];
 tss_t tss_create_user_task(uint32_t cr3);
-//void tss_create_user_task(int8_t task_id, uint32_t cr3);
 gdt_entry_t tss_gdt_entry_for_task(tss_t* tss);
-//void tss_gdt_entry_for_task(size_t gdt_id, tss_t* tss);
 
 #endif //  __TSS_H__
