@@ -79,23 +79,28 @@ uint32_t forzar_ejecucion(uint32_t virt, uint32_t phy, uint16_t task_sel) {
     // Mapeos
     // Obtener CR3 de ambaas tareas, la que esta en ejecucion y la que pasa por parametro
     uint32_t cr3_running_task = rcr3(); // CR3 de la tarea que esta corriendo, esta definida en "i386.h"
+    
     // Obtengo el indice en la GDT de la TSS para el selector de segmento de la tarea que me pasan por parametro
     uint16_t index_task_param = task_sel >> 3; // task_sel = [Index (13 bits) | TI (1 bit) | RPL (2 bit)]
     uint32_t tss_address = (gtd[index_task_param].base_31_24 << 24) | (gtd[index_task_param].base_23_16 << 16) | (gdt[index_task_param].base_15_0);
     tss* tss_param_task = (tss*)tss_address;
     uint32_t cr3_param_task = tss->cr3; // CR3 de la tarea que me pasan por parametro
+    
     // void mmu_mapear_pagina(uint32_t cr3, uint32_t virt, uint32_t phy, uint32_t attrs)
     /* Mapea ambos cr3 a la misma direccion */
     mmu_mapear_pagina(cr3_running_task, virt, phy, MMU_U | MMU_R | MMU_P);
     mmu_mapear_pagina(cr3_param_task, virt, phy, MMU_U | MMU_R | MMU_P);
+    
     // Fuerza la ejecucion a partir de virt de la tarea que me pasan por parametro
     tss_param_task->eip = virt;
+    
     /* La tarea que pasan por parametro esta frenada en la interrupcion de reloj,
     * es decir, que el CS es de nivel 0. En la interrupcion de reloj el unico lugar
     * donde las tareas quedan desalojadas y para poder forzar la ejecucion del codigo
     * que me pasan por parametro tengo que hacer cs:eip, sino hago esto estaria haciendo cs0:eip y esta mal.
     */
     tss_param_task->cs = GDT_CS_RING_3; // cargo selector de segmento de codigo nivel 3
+    
     /* Reinicializo el puntero de pila nivel 0 y 3 de la tarea que se pasan por parametro,
     * poniendo en cero los primeros doce bits y sumando 0x1000.
     */
@@ -112,6 +117,7 @@ uint32_t forzar_ejecucion(uint32_t virt, uint32_t phy, uint16_t task_sel) {
     tss_param_task->esp = esp_task_param[11] & (0xFFFFF000); // Reinicia la pila de nivel 3. Mas en el ejemplo de abajo
     tss_param_task->esp += 0x1000;
     tss_param_task->ss = GDT_IDX_DS_RING_3; // selector de segmento de pila tiene que ser de datos nivel 3
+    
     /* Las dos siguientes lineas podrian no haberse hecho, porque son campos estaticos en la TSS
     * Esto quiere decir, que una vez que fueron seteados, el procesador ya no puede
     * modificarlos y el puntero de pila que quedo guardado en la TSS ya que se
