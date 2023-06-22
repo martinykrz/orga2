@@ -91,11 +91,11 @@ Un selector de segmentos tiene un tamaño de 16 bits y de divide en 3 partes
     * Es el indice en la tabla de descriptores. 
     * Al tener 13 bits, se puede deducir que cada tabla puede alojar hasta 2^13^ descriptores.
 - `TI`
-    * Table Indicator.
+    * *Table Indicator*
     * `TI = 0`, **GDT** (Global Descriptor Table) :point_left:
     * `TI = 1`, **LDT** (Local Descriptor Table)
 - `RPL`
-    * Requested Priviledge Level
+    * *Requested Priviledge Level*
     * Es el nivel de privilegio que declara tener el dueño del segmento.
     * `RPL = 00`, :sunglasses:
     * `RPL = 11`, :nerd_face:
@@ -293,17 +293,12 @@ Dividir el espacio de direcciones virtuales del espcacio fisico tiene la ventaja
 ## Traduccion de direcciones virtuales
 En la direccion virtual, encontraremos las herramientas necesarias para encontrar la pagina de 4K que necesitamos.
 La misma se divide en tres partes
-- `PD_Index`
-    * *PageDirectory_Index*
-    * Indice dentro del **Page Directory** donde se encuentra la ubicacion del **Paga Table**
-    * Bits 31:22
-- `PT_Index`
-    * *PageTable_Index*
-    * Indice dentro del **Paga Table** donde se encuentra la ubicacion del **Page Frame**
-    * Bits 21:12
-- `Page_Offset`
-    * Desplazamiento desde la base de la pagina donde se encuentra el dato esperado
-    * Bits 11:0
+
+| Nombre | Extended | Definicion | Bits |
+| :----: | :------: | :--------: | :--: |
+| `PD_Index` | *PageDirectory_Index* | Indice dentro del **Page Directory** donde se encuentra la ubicacion del **Paga Table** | 31:22 |
+| `PT_Index` | *PageTable_Index* | Indice dentro del **Paga Table** donde se encuentra la ubicacion del **Page Frame** | 21:12 |
+| `Page_Offset` | *Page_Offset* | Desplazamiento desde la base de la pagina donde se encuentra el dato esperado | 11:0 |
 
 ![Mecanismo de Paginacion](imgs/mecanismo_paginacion.png)
 
