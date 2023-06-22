@@ -433,7 +433,7 @@ Campos mas relevantes a completar
 - `LIMIT`
     * Es el tamaño de la TSS. `0x67` es el minimo requerido
 - `BASE`
-    * Indica la direccion base de la TSS
+    * Indica la direccion base de la TSS 
 
 ## Task Switch
 El procesador puede despachar una tarea de las siguientes maneras
