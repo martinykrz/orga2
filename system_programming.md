@@ -1,5 +1,46 @@
 # System Programming
 
+## Table of Content
+- [Modo Real, Modo Protegido](#modo-real-modo-protegido)
+    * [Propiedades](#propiedades)
+    * [Pasaje a Modo Protegido](#pasaje-a-modo-protegido)
+        + [Bootloader comun](#bootloader-comun)
+        + [Bootloader Orga2](#bootloader-orga2)
+        + [Segmentacion](#segmentacion)
+            - [Selector de Segmentos](#selector-de-segmentos)
+            - [Descriptor de Segmentos](#descriptor-de-segmentos)
+            - [Tipos de Descriptores de Datos](#tipos-de-descriptores-de-datos)
+            - [Tipos de Descriptores de Codigo](#tipos-de-descriptores-de-codigo)
+            - [GDT](#gdt)
+            - [LDT](#ldt)
+- [Interrupciones](#interrupciones)
+    * [Tipos de Interrupciones](#tipos-de-interrupciones)
+    * [Tipos de Excepciones](#tipos-de-excepciones)
+    * [Implementacion](#implementacion)
+        + [Estado de la pila](#estado-de-la-pila)
+            - [Pila sin error code](#pila-sin-error-code)
+            - [Pila con error code](#pila-con-error-code)
+            - [Copia del Stack Usuario al Stack Kernel](#copia-del-stack-usuario-al-stack-kernel)
+        + [Estructura de la IDT](#estructura-de-la-IDT)
+            - [Descriptor de Interrupciones](#descriptor-de-interrupciones)
+        + [Esquema general](#esquema-general)
+- [Paginacion](#paginacion)
+    * [Traduccion de direcciones virtuales](#traduccion-de-direcciones-virtuales)
+        + [CR3](#cr3)
+        + [Page Directory Entry](#page-directory-entry)
+        + [Page Table Entry](#page-table-entry)
+    * [Translation Lookaside Buffer](#translation-lookaside-buffer)
+    * [Segmentacion + Paginacion](#segmentacion--paginacion)
+- [Tareas](#tareas)
+    * [Definiciones](#definiciones)
+    * [Estructura](#estructura)
+        + [TSS](#tss)
+        + [TSS Descriptor](#tss-descriptor)
+    * [Task Switch](#task-switch)
+        + [Como hacer un Task Switch?](#como-hacer-un-task-switch)
+        + [Rutina de atencion de Interrupciones del Reloj](#rutina-de-atencion-de-interrupciones-del-reloj)
+        + [Nivel de Privilegios en Tareas](#nivel-de-privilegios-en-tareas)
+
 ## Modo Real, Modo Protegido
 
 ### Propiedades
@@ -175,8 +216,6 @@ Como pasar de Direccion Logica a Direccion Lineal
 ![Direccion Logica a Direccion Lineal, LDT](imgs/ldt.png)
 
 # Interrupciones
-
-## Que son las interrupciones y para que las usamos?
 - Conceptualmente permite a un agente externo o interno solicitar la interrupcion de la ejecucion actual para atender un pedido
 - La parte solicitante ve al procesador como un recurso al cual quiere tener acceso
 - El mecanismo implementado **define una identidad numerica para cada interrupcion** y utiliza una tabla de descriptores donde cada indice, o identidad, se decide:
@@ -439,7 +478,7 @@ El procesador puede despachar una tarea de las siguientes maneras
 
 ![Paso 7](imgs/Paso7.png)
 
-### Rutina de Atencion de Interrupicones del Reloj
+### Rutina de Atencion de Interrupciones del Reloj
 ```asm
 ; La estructura definida se puede ver como una
 ; direccion logica de 48 bits en little endian
@@ -462,17 +501,21 @@ _isr32:
     ; el selector de segmento de la proxima tarea a ejecutar.
     ; Los selectores tiene 16 bits por eso usa ax y no eax.
     call sched_nextTask
+
     ; STR lee el registro TR y lo guarda en cx.
     ; Ahora cx va a tener el valor del selector del segmento 
     ; de la tarea en ejecucion.
     str cx
+
     ; ax <- selector de segmento de la tarea proxima
     ; cx <- selector de segmento de la tarea actual (en ejecucion)
     cmp ax, cx
+
     ; Si la tarea en ejecucion es la misma que la misma que la proxima
     ; (ax = cx), salta a fin y no hay cambio de tarea.
     ; Si son distintas, ejecuta las siguientes lineas
-    je .fin.
+    je .fin
+
     ; Donde mueve el valor de ax a la posicion de memoria reservada
     ; para el selector.
     ; Y luego, hace un jmp far al contenido de la direccion indicada
@@ -480,17 +523,22 @@ _isr32:
     ; Dicho jump recive una direccion logica de 48 bits.
     ; selector: dw 0 -> selector: tiene el valor de ax
     mov [selector], ax
+
     ; Salta al selector de TSS en la GDT de la tarea proxima retornada por el scheduler.
     ; Cambia la tarea y automaticamente se dispara el cambio de contexto.
     ; Esto es valido ya que, cuando se hace un jmp far,
     ; no importa el valor del offset sino el valor de ax
     ; (en este caso el selector TSS) donde va a saltar.
+    jmp far [offset]
+
 .fin:
     ; Obtiene los registros de proposito general.
     popad
     ; Volver a la rutina que la llamo restaurando el EIP.
     iret
 ```
+
+![Ejecucion de la rutina del reloj](imgs/scheduler_task_1.png)
 
 ### Niveles de Privilegios en Tareas
 Una tarea ejecutando en nivel 0 indicado por su `ss` y `se` produce la interrupcion de reloj. El nivel de ejecucion no cambia dado que la interrupcion de reloj es nivel 0.
@@ -502,3 +550,5 @@ Cuando hay niveles de privilegios distintos, la `ss` y `esp` del procesador siem
 Ejecutando una tarea de nivel 3 y justo se produjo una interrupción de nivel 0. Si se produce un cambio de contexto, la TSS de una tarea de nivel 3 podría quedar con un ss almacenado de nivel 0.
 
 Los valores nivel 3 quedan en la pila y se restaurarán en el `iret` correspondiente.
+
+![Task Stack](imgs/stack_2.png)
