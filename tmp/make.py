@@ -110,12 +110,13 @@ def debug():
         ])
     return None
 
-def main(mk: bool, run: bool, dbg: bool, all: bool):
+def main(mk: bool, clr: bool,  run: bool, dbg: bool, all: bool):
     if mk:
-        clean()
         make()
     elif run:
         rn()
+    elif clr:
+        clean()
     elif dbg:
         debug()
     elif all:
@@ -129,8 +130,9 @@ def main(mk: bool, run: bool, dbg: bool, all: bool):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--make", action='store_true', help="Make objs and exe")
+    parser.add_argument("-c", "--clear", action='store_true', help="Clear objs and exe")
     parser.add_argument("-r", "--run", action='store_true', help="Run exe")
     parser.add_argument("-d", "--debug", action='store_true', help="Debug program")
     parser.add_argument("-a", "--all", action='store_true', help="Make, run and debug")
     args = parser.parse_args()
-    main(mk=args.make, run=args.run, dbg=args.debug, all=args.all)
+    main(mk=args.make, clr=args.clear, run=args.run, dbg=args.debug, all=args.all)
