@@ -15,9 +15,8 @@ filtro_t filtros[2];
 int main() {
     filtros[0] = Offset;
     filtros[1] = Sharpen;
-
+     
     configuracion_t config;
-    config.archivo_entrada = "img/paisaje.bmp";
     config.archivo_entrada_2 = NULL;
     config.dst.width = 0;
     config.bits_src = 32;
@@ -27,11 +26,11 @@ int main() {
     config.frames = false;
     config.nombre = false;
     config.cant_iteraciones = 5;
-    config.carpeta_salida = ".";
-    config.extra_archivo_salida = "img/output.bmp";
     config.tipo_filtro = 1; // 0: C, 1: ASM
-
-    filtro_t *filtro = &filtros[0]; // 0->Offset, 1->Sharpen
+     
+    config.archivo_entrada = "img/puente.bmp";
+    config.archivo_salida = "puente_sharpen.bmp";
+    filtro_t *filtro = &filtros[1]; // 0->Offset, 1->Sharpen
     correr_filtro_imagen(&config, filtro->aplicador);
     // filtro->liberar(&config);
 
