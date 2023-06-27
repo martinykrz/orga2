@@ -92,6 +92,12 @@ def make():
     return None
 
 def clean():
+    try:
+        os.remove("paisaje_sharpen.bmp")
+        os.remove("colores32_sharpen.bmp")
+        os.remove("puente_sharpen.bmp")
+    except:
+        pass
     for file in os.listdir("build/"):
         file_path = os.path.join("build/", file)
         if os.path.isfile(file_path):
@@ -110,29 +116,26 @@ def debug():
         ])
     return None
 
-def main(mk: bool, clr: bool,  run: bool, dbg: bool, all: bool):
+def main(mk: bool, dbg: bool, run: bool, all: bool):
     if mk:
-        make()
-    elif run:
-        rn()
-    elif clr:
         clean()
+        make()
     elif dbg:
         debug()
+    elif run:
+        rn()
     elif all:
         clean()
         make()
         rn()
-        debug()
     else:
         print("No flag activated")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--make", action='store_true', help="Make objs and exe")
-    parser.add_argument("-c", "--clear", action='store_true', help="Clear objs and exe")
-    parser.add_argument("-r", "--run", action='store_true', help="Run exe")
     parser.add_argument("-d", "--debug", action='store_true', help="Debug program")
-    parser.add_argument("-a", "--all", action='store_true', help="Make, run and debug")
+    parser.add_argument("-r", "--run", action='store_true', help="Run program")
+    parser.add_argument("-a", "--all", action='store_true', help="Make and Run")
     args = parser.parse_args()
-    main(mk=args.make, clr=args.clear, run=args.run, dbg=args.debug, all=args.all)
+    main(mk=args.make, dbg=args.debug, run=args.run, all=args.all)
