@@ -64,7 +64,7 @@ void imagenes_flipVertical(buffer_info_t *buffer, BMP *bmp) {
 void imagenes_guardar(configuracion_t *config) {
     if (config->bits_dst == 8)
         bmp_convert_8_to_32_bpp(dst_img);
-    bmp_save("build/output.bmp", dst_img);
+    bmp_save(config->archivo_salida, dst_img);
 }
 
 void imagenes_liberar() {
