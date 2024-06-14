@@ -5,7 +5,6 @@ tester
 .gdb_*
 *.pdf
 *.log
-*.txt
 *.bin
 *.elf
 *.d
