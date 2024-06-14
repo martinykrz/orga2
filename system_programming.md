@@ -521,7 +521,7 @@ _isr32:
 ![Ejecucion de la rutina del reloj](imgs/scheduler_task_1.png)
 
 ### Niveles de Privilegios en Tareas
-Una tarea ejecutando en nivel 0 indicado por su `ss` y `se` produce la interrupcion de reloj. El nivel de ejecucion no cambia dado que la interrupcion de reloj es nivel 0.
+Una tarea ejecutando en nivel 0 indicado por su `ss` y `esp` produce la interrupcion de reloj. El nivel de ejecucion no cambia dado que la interrupcion de reloj es nivel 0.
 
 Ahora, si tenemos una tarea ejecutando en nivel 3 indicado por su `ss` y se produce la interrupción de reloj. El nivel de ejecución cambia. Por lo tanto, usa la pila de nivel 0 (`ss0`) indicada en la TSS para guardar la información de retorno.
 
