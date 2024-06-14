@@ -111,7 +111,7 @@ void mmu_map_page(uint32_t cr3, vaddr_t virt, paddr_t phy, uint32_t attrs) {
         paddr_t new_page_table = mmu_next_free_kernel_page();
         zero_page(new_page_table);
         pd[id_dir].pt = (uint32_t)(new_page_table >> 12);
-        pd[id_dir].attrs = MMU_U | MMU_W | MMU_P;
+        pd[id_dir].attrs = attrs | MMU_P;
     }
 
     // Extract PT address from the PD
@@ -136,7 +136,7 @@ paddr_t mmu_unmap_page(uint32_t cr3, vaddr_t virt) {
 
     // Invoca la PD y PT
     pd_entry_t* pd = (pd_entry_t*)CR3_TO_PAGE_DIR(cr3);
-    pt_entry_t* pt = (pd_entry_t*)((pd[id_dir].pt) & 0xFFFFF000);
+    pt_entry_t* pt = (pt_entry_t*)((pd[id_dir].pt) & 0xFFFFF000);
 
     // Gets the physical address
     paddr_t phy = (pt[id_table].page << 12);
@@ -199,7 +199,7 @@ paddr_t mmu_init_task_dir(paddr_t phy_start) {
      * La rutina la hace el usuario (U/S=1)
     */
     for (int i=0; i < TASK_CODE_PAGES; i++) {
-        mmu_map_page(cr3, TASK_CODE_VIRTUAL + (i * PAGE_SIZE), phy_start + (i * PAGE_SIZE), MMU_U | MMU_P);
+        mmu_map_page(cr3, TASK_CODE_VIRTUAL + i * PAGE_SIZE, phy_start + i * PAGE_SIZE, MMU_U | MMU_P);
     }
      
     /* Stack mapping
@@ -207,7 +207,7 @@ paddr_t mmu_init_task_dir(paddr_t phy_start) {
     */
     paddr_t stack = mmu_next_free_user_page();
     mmu_map_page(cr3, TASK_STACK_BASE - PAGE_SIZE, stack, MMU_U | MMU_W | MMU_P);
-    mmu_map_page(cr3, TASK_SHARED_PAGE, SHARED, MMU_U | MMU_P);
+    mmu_map_page(cr3, TASK_STACK_BASE, SHARED, MMU_U | MMU_P);
 
     return cr3;
 }

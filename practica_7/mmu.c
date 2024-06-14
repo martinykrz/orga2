@@ -136,7 +136,7 @@ paddr_t mmu_unmap_page(uint32_t cr3, vaddr_t virt) {
 
     // Invoca la PD y PT
     pd_entry_t* pd = (pd_entry_t*)CR3_TO_PAGE_DIR(cr3);
-    pt_entry_t* pt = (pd_entry_t*)((pd[id_dir].pt) & 0xFFFFF000);
+    pt_entry_t* pt = (pt_entry_t*)((pd[id_dir].pt) & 0xFFFFF000);
 
     // Gets the physical address
     paddr_t phy = (pt[id_table].page << 12);
