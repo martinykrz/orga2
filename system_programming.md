@@ -42,7 +42,7 @@
     * [Task Switch](#task-switch)
         + [Como hacer un Task Switch?](#como-hacer-un-task-switch)
         + [Rutina de atencion de Interrupciones del Reloj](#rutina-de-atencion-de-interrupciones-del-reloj)
-        + [Nivel de Privilegios en Tareas](#nivel-de-privilegios-en-tareas)
+        + [Nivel de Privilegios en Tareas](#niveles-de-privilegios-en-tareas)
 
 # Modo Real, Modo Protegido
 
