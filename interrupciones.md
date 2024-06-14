@@ -1,7 +1,7 @@
 # Interrupciones
 
 ## Table of Content
-* [Definiciones](#definiciones)
+* [Definiciones](#interrupciones-definiciones)
 * [Tipos de Interrupciones](#tipos-de-interrupciones)
 * [Tipos de Excepciones](#tipos-de-excepciones)
 * [Implementacion](#implementacion)
@@ -13,7 +13,7 @@
         - [Descriptor de Interrupciones](#descriptor-de-interrupciones)
     + [Esquema general](#esquema-general)
 
-## Definiciones
+## Interrupciones: Definiciones
 - Conceptualmente permite a un agente externo o interno solicitar la interrupcion de la ejecucion actual para atender un pedido
 - La parte solicitante ve al procesador como un recurso al cual quiere tener acceso
 - El mecanismo implementado **define una identidad numerica para cada interrupcion** y utiliza una tabla de descriptores donde cada indice, o identidad, se decide:

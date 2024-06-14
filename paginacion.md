@@ -1,4 +1,15 @@
 # Paginacion
+
+## Table of Content
+* [Definiciones](#paginacion-definiciones)
+* [Traduccion de direcciones virtuales](#traduccion-de-direcciones-virtuales)
+    + [CR3](#cr3)
+    + [Page Directory Entry](#page-directory-entry)
+    + [Page Table Entry](#page-table-entry)
+* [Translation Lookaside Buffer](#translation-lookaside-buffer)
+* [Segmentacion + Paginacion](#segmentacion--paginacion)
+
+## Pagincacion: Definiciones
 La funcion de la paginacion es la de traducir una direccion virtual en una direccion fisica. Esta traduccion permite separar el espacio de direcciones expuestas al proceso *direcciones virtuales* de su ubicacion en la memoria fisica (*direcciones fisicas* en la memoria principal).
 
 Dividir el espacio de *direcciones virtuales* del espcacio fisico tiene la ventaja de poder separar el espacio de distintos procesos que se ejecutan sobre el mismo procesador y por ende comparten una misma memoria principal. 

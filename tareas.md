@@ -1,6 +1,16 @@
 # Tareas
 
-## Definiciones
+## Table of Content
+* [Definiciones](#tareas-definiciones)
+    * [Estructura](#estructura)
+        + [TSS](#tss)
+        + [TSS Descriptor](#tss-descriptor)
+    * [Task Switch](#task-switch)
+        + [Como hacer un Task Switch?](#como-hacer-un-task-switch)
+        + [Rutina de atencion de Interrupciones del Reloj](#rutina-de-atencion-de-interrupciones-del-reloj)
+        + [Nivel de Privilegios en Tareas](#nivel-de-privilegios-en-tareas)
+
+## Tareas: Definiciones
 - Tarea
     * Es una unidad de trabajo que el procesador puede despachar, ejecutar y suspender. Puede ser usada para ejecutar un programa
     * Dos o mas tareas distintas pueden tener un mismo codigo de programa, sin embargo, sus contexto de ejecucion y datos asociados pueden ser distintos. Podemos pensarlo como distintas instancias del mismo programa.
