@@ -216,7 +216,7 @@ Significados de los bits de `Types`
 
 <details>
 
-<summary>kernel.asm</sumary>
+<summary>kernel.asm</summary>
 
 ```asm
 %include "print.mac"
@@ -1298,6 +1298,9 @@ extern tasks_screen_draw
 extern tss_create_user_task
 extern sched_init
 extern tasks_init
+
+%define IDLE_SEL  12 << 3
+%define INITIAL_SEL  11 << 3
 
 ;; Antes de cargar la IDT y el PIC
 ;; Activamos la TSS y el Scheduler
