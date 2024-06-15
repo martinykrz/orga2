@@ -111,7 +111,8 @@ void mmu_map_page(uint32_t cr3, vaddr_t virt, paddr_t phy, uint32_t attrs) {
         paddr_t new_page_table = mmu_next_free_kernel_page();
         zero_page(new_page_table);
         pd[id_dir].pt = (uint32_t)(new_page_table >> 12);
-        pd[id_dir].attrs = attrs | MMU_P;
+        // pd[id_dir].attrs = attrs | MMU_P;
+        pd[id_dir].attrs = attrs | MMU_W | MMU_P;
     }
 
     // Extract PT address from the PD
