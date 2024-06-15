@@ -114,41 +114,6 @@ modo_protegido:
     or eax, 0x80000000 ; 0x80000000 es 1 con 30 ceros
     mov cr0, eax
 
-    ; Mapping test
-    push 2 ; attrs: R/W=1
-    push 0x00400000 ; phy
-    push 0x0050E000 ; virt
-    mov eax, cr3
-    push eax ; cr3
-    call mmu_map_page ; mapping func
-    ; alinear stack
-    ; cantidad de parametros por tamaño de parametro
-    add esp, 4*4
-    mov byte [0x0050E000], 54
-
-    ; Unmap test
-    mov eax, cr3
-    push eax
-    push 0x0050E000 ; virt
-    call mmu_unmap_page
-    add esp, 2*4
-
-    ; Copy page test
-    push 0x00400000 ; src_addr <- 54
-    push 0x00402000 ; dst_addr <- 0
-    call copy_page
-    add esp, 2*4
-
-    ; Fake task test
-    mov ebx, cr3 ; store current CR3
-    push 0x18000
-    call mmu_init_task_dir
-    add esp, 4
-
-    mov cr3, eax ; eax <- new CR3
-    print_text_pm start_cr3_msg, start_cr3_len, 1, 0, 0
-    mov cr3, ebx ; return the previous CR3
-
     ; PRIMERO SE INICIALIZA PAGINACION Y DESPUES LO OTRO (IDT, INTS)
 
     ; Inicializar pantalla
@@ -162,8 +127,6 @@ modo_protegido:
     call pic_reset
     call pic_enable
     sti
-
-    int 98
 
     ; Ciclar infinitamente 
     mov eax, 0xFFFF
