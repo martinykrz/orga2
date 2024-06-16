@@ -47,6 +47,7 @@
         + [Rutina de atencion de Interrupciones del Reloj](#rutina-de-atencion-de-interrupciones-del-reloj)
         + [Nivel de Privilegios en Tareas](#niveles-de-privilegios-en-tareas)
     * [Codigo](#tareas-codigo)
+- [Overall](#overall)
 
 # Modo Real, Modo Protegido
 
@@ -1291,7 +1292,7 @@ Los valores nivel 3 quedan en la pila y se restaurarán en el `iret` correspondi
 ;; Dentro de la seccion de modo protegido
 ;; Despues de cargar la GDT
 ;; Despues de habilitar la paginacion
-;; El resto que falta es lo mismo que el kernel original + interrupciones
+;; El resto que falta es lo mismo que el kernel original + interrupciones + paginacion
 
 extern tss_init
 extern tasks_screen_draw
@@ -1307,7 +1308,6 @@ extern tasks_init
 
 ; Init TSS
 call tss_init
-;call tasks_screen_draw
 
 ; Init Scheduler
 call sched_init
@@ -1427,3 +1427,7 @@ void tss_init(void) {
 ```
 
 </details>
+
+# Overall
+
+![Overall](imgs/overall_system_programming.png)
