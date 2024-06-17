@@ -24,7 +24,7 @@
             - [Pila sin error code](#pila-sin-error-code)
             - [Pila con error code](#pila-con-error-code)
             - [Copia del Stack Usuario al Stack Kernel](#copia-del-stack-usuario-al-stack-kernel)
-        + [Estructura de la IDT](#estructura-de-la-IDT)
+        + [Estructura de la IDT](#estructura-de-la-idt)
             - [Descriptor de Interrupciones](#descriptor-de-interrupciones)
         + [Esquema general](#esquema-general)
     * [Codigo](#interrupciones-codigo)
@@ -484,6 +484,9 @@ Si se genero en codigo del kernel, queda en el kernel
 - `Segment selector`, indica que selector debe utilizarse al ejecutar el codigo de la rutina
 - `P`, indica si la rutina se encuentra en memoria o no
 - `DPL`, indica el nivel de privilegio
+- `D`, indica la longitud del descriptor
+    * `D = 0`, 16 bits
+    * `D = 1`, 32 bits :point_left:
 
 ### Esquema general
 
@@ -513,6 +516,8 @@ lidt [IDT_DESC]
 ; Inicializacion del PIC
 call pic_reset
 call pic_enable
+
+; Habilitamos las interrupciones
 sti
 ```
 
@@ -540,6 +545,8 @@ idt_descriptor_t IDT_DESC = {sizeof(idt) - 1, (uint32_t)&idt};
  * solo incluye sus 16bits mas significativos */
 #define HIGH_16_BITS(v) ((uint32_t)(v) >> 16 & 0xFFFF)
 
+/* INTERRUPT_GATE_TYPE = 0b01110 == 0XE == 14 */
+
 /* Dado un numero de de interrupcion asigna a `idt` la entrada
  * correspondiente con nivel 0 */
 #define IDT_ENTRY0(numero)                                                     \
@@ -547,7 +554,7 @@ idt_descriptor_t IDT_DESC = {sizeof(idt) - 1, (uint32_t)&idt};
     .offset_31_16 = HIGH_16_BITS(&_isr##numero),                               \
     .offset_15_0 = LOW_16_BITS(&_isr##numero),                                 \
     .segsel = GDT_CODE_0_SEL,                                                  \
-    .type = 14,                                                               \
+    .type = INTERRUPT_GATE_TYPE,                                               \
     .dpl = 0,                                                                  \
     .present = 1                                                               \
   }
@@ -559,7 +566,7 @@ idt_descriptor_t IDT_DESC = {sizeof(idt) - 1, (uint32_t)&idt};
     .offset_31_16 = HIGH_16_BITS(&_isr##numero),                               \
     .offset_15_0 = LOW_16_BITS(&_isr##numero),                                 \
     .segsel = GDT_CODE_0_SEL,                                                  \
-    .type = 14,                                                               \
+    .type = INTERRUPT_GATE_TYPE,                                               \
     .dpl = 3,                                                                  \
     .present = 1                                                               \
   }
@@ -1222,6 +1229,7 @@ _isr32:
 
     ; Indica al PIC que la interrupcion fue atendida
     call pic_finish1
+    call next_clock
 
     ; Intercambio de tareas!!
     ; Pide al scheduler la proxima tarea a ejecutar.
@@ -1230,6 +1238,10 @@ _isr32:
     ; el selector de segmento de la proxima tarea a ejecutar.
     ; Los selectores tiene 16 bits por eso usa ax y no eax.
     call sched_nextTask
+    
+    ; En caso que devuelva todos ceros, cortamos la interrupcion
+    cmp ax, 0
+    je .fin
 
     ; STR lee el registro TR y lo guarda en cx.
     ; Ahora cx va a tener el valor del selector del segmento 
@@ -1251,7 +1263,7 @@ _isr32:
     ; por el offset.
     ; Dicho jump recive una direccion logica de 48 bits.
     ; selector: dw 0 -> selector: tiene el valor de ax
-    mov [selector], ax
+    mov word [selector], ax
 
     ; Salta al selector de TSS en la GDT de la tarea proxima retornada por el scheduler.
     ; Cambia la tarea y automaticamente se dispara el cambio de contexto.
@@ -1270,17 +1282,17 @@ _isr32:
 ![Ejecucion de la rutina del reloj](imgs/scheduler_task_1.png)
 
 ### Niveles de Privilegios en Tareas
+![Task Stack](imgs/stack_2.png)
+
 Una tarea ejecutando en nivel 0 indicado por su `ss` y `esp` produce la interrupcion de reloj. El nivel de ejecucion no cambia dado que la interrupcion de reloj es nivel 0.
 
 Ahora, si tenemos una tarea ejecutando en nivel 3 indicado por su `ss` y se produce la interrupción de reloj. El nivel de ejecución cambia. Por lo tanto, usa la pila de nivel 0 (`ss0`) indicada en la TSS para guardar la información de retorno.
 
 Cuando hay niveles de privilegios distintos, la `ss` y `esp` del procesador siempre toma la del nivel de ejecución actual.
 
-Ejecutando una tarea de nivel 3 y justo se produjo una interrupción de nivel 0. Si se produce un cambio de contexto, la TSS de una tarea de nivel 3 podría quedar con un ss almacenado de nivel 0.
+Ejecutando una tarea de nivel 3 y justo se produjo una interrupción de nivel 0. Si se produce un cambio de contexto, la TSS de una tarea de nivel 3 podría quedar con un `ss` almacenado de nivel 0.
 
 Los valores nivel 3 quedan en la pila y se restaurarán en el `iret` correspondiente.
-
-![Task Stack](imgs/stack_2.png)
 
 ## Tareas: Codigo
 
