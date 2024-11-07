@@ -1760,6 +1760,131 @@ void tasks_tick(void) {
 
 </details>
 
+<details>
+
+<summary>isr.asm</summary>
+
+```asm
+;; Rutina de atención de Page Fault
+;; -------------------------------------------------------------------------- ;;
+global _isr14
+
+_isr14:
+	; Estamos en un page fault.
+	pushad
+    call page_fault_handler
+    cmp ax, byte 0
+    jne .fin
+    
+    .ring0_exception:
+	; Si llegamos hasta aca es que cometimos un page fault fuera del area compartida.
+    call kernel_exception
+    jmp $
+
+    .fin:
+	popad
+	add esp, 4 ; error code
+	iret
+
+;; Rutina de atención del RELOJ
+;; -------------------------------------------------------------------------- ;;
+global _isr32
+_isr32:
+    pushad
+    ; 1. Le decimos al PIC que vamos a atender la interrupción
+    call pic_finish1
+    call next_clock
+    ; 2. Realizamos el cambio de tareas en caso de ser necesario
+    call sched_next_task
+    cmp ax, 0
+    je .fin
+
+    str bx
+    cmp ax, bx
+    je .fin
+
+    mov word [sched_task_selector], ax
+    ; Aca se produce el task switch y se crea la tss
+    ; En la tss, se encuentran todos los valores del kernel (nivel 0)
+    ; Dentro de esa tss se encuentra la pila del kernel 
+    ; donde se guarda los valores de usuario
+    jmp far [sched_task_offset]
+
+    .fin:
+    ; 3. Actualizamos las estructuras compartidas ante el tick del reloj
+    call tasks_tick
+    ; 4. Actualizamos la "interfaz" del sistema en pantalla
+    call tasks_screen_update
+    popad
+    iret
+
+;; Rutina de atención del TECLADO
+;; -------------------------------------------------------------------------- ;;
+global _isr33
+; COMPLETAR: Implementar la rutina
+_isr33:
+    pushad
+    ; 1. Le decimos al PIC que vamos a atender la interrupción
+    call pic_finish1
+    ; 2. Leemos la tecla desde el teclado y la procesamos
+    in al, 0x60
+    push eax
+    call tasks_input_process
+    add esp, 4
+    popad
+    iret
+
+
+;; Rutinas de atención de las SYSCALLS
+;; -------------------------------------------------------------------------- ;;
+
+global _isr88
+; Syscall para que una tarea dibuje en su pantalla
+_isr88:
+  pushad
+  push eax
+  call tasks_syscall_draw
+  add esp, 4
+  popad
+  iret
+
+global _isr98
+_isr98:
+  mov eax, 0x62
+  iret
+
+; PushAD Order
+%define offset_EAX 28
+%define offset_ECX 24
+%define offset_EDX 20
+%define offset_EBX 16
+%define offset_ESP 12
+%define offset_EBP 8
+%define offset_ESI 4
+%define offset_EDI 0
+
+
+;; Funciones Auxiliares
+;; -------------------------------------------------------------------------- ;;
+isrNumber:           dd 0x00000000
+isrClock:            db '|/-\'
+next_clock:
+        pushad
+        inc DWORD [isrNumber]
+        mov ebx, [isrNumber]
+        cmp ebx, 0x4
+        jl .ok
+                mov DWORD [isrNumber], 0x0
+                mov ebx, 0
+        .ok:
+                add ebx, isrClock
+                print_text_pm ebx, 1, 0x0f, 49, 79
+                popad
+        ret
+```
+
+</details>
+
 # Overall
 
 ![Overall](imgs/overall_system_programming.png)
